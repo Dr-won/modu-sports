@@ -178,6 +178,32 @@ p.empty { padding: 24px; }
 .svc-list summary { cursor: pointer; }
 .svc-list details ul { margin: 8px 0 0; padding-left: 1.2em; color: var(--ink-2); font-size: .92rem; }
 
+/* 설문 */
+.feedback-tab { font: inherit; font-weight: 600; font-size: .95rem; background: #fff6ef; color: var(--accent); border: 1.5px solid #f2c4a6; cursor: pointer; }
+.survey-nudge {
+  position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 30; width: min(520px, calc(100% - 24px));
+  background: var(--card); border: 2px solid var(--brand); border-radius: var(--radius); padding: 14px 16px; box-shadow: 0 8px 30px rgba(0,0,0,.18);
+  display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+.survey-nudge p { margin: 0; font-size: .95rem; }
+.survey-actions { display: flex; gap: 8px; }
+.survey-modal { position: fixed; inset: 0; z-index: 40; background: rgba(22,32,42,.45); display: grid; place-items: center; padding: 12px; }
+.survey-modal[hidden], .survey-nudge[hidden] { display: none; }
+.survey-box { background: var(--card); border-radius: var(--radius); padding: 20px; width: min(620px, 100%); max-height: calc(100vh - 24px); overflow: auto; }
+.survey-top { display: flex; justify-content: space-between; align-items: center; }
+.survey-top h2 { margin: 0; font-size: 1.25rem; }
+.survey-x { font: inherit; font-size: 1.2rem; background: none; border: 0; cursor: pointer; min-width: 44px; min-height: 44px; }
+.survey-box fieldset { border: 0; padding: 0; margin: 14px 0 0; min-width: 0; }
+.survey-box legend { font-weight: 700; padding: 0; }
+.survey-box .choices { margin: 8px 0 0; gap: 8px; }
+.pick { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1.5px solid #b8c0c8; border-radius: 999px; cursor: pointer; font-weight: 600; }
+.pick input { width: 18px; height: 18px; accent-color: var(--brand); margin: 0; }
+.pick:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.pick.num { min-width: 56px; justify-content: center; }
+.sv-comment { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-weight: 700; }
+.sv-comment textarea { font: inherit; font-weight: 400; border: 1.5px solid #b8c0c8; border-radius: 10px; padding: 10px; resize: vertical; }
+.sv-done { font-size: 1.15rem; font-weight: 700; margin: 20px 0; }
+
 /* 지역 공백 보기 */
 .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
 .tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
