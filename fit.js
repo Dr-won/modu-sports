@@ -268,7 +268,7 @@
       </div>
       <div class="chips">${chips}</div>
       <p class="hint" id="fit-savemsg">${saved ? '이 기기(브라우저)에만 저장되어 있어요. 서버로 보내지 않아요.' : '저장하면 다음에 들어올 때 바로 맞춤 결과를 보여 드려요. 이 기기에만 저장돼요.'}</p>
-      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동·재활 바우처</a></nav>
+      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동·재활 바우처</a>${+a.age < 18 ? '<a href="#sec-dev" data-jump>발달재활</a>' : ''}</nav>
     </div>`;
   }
 
@@ -289,6 +289,24 @@
       .sort((x, y) => isNew(y) - isNew(x) || (y.localCd === a.local) - (x.localCd === a.local));
     const nearV = a.local ? vouchers.filter((f) => f.localCd === a.local) : vouchers;
     const kCount = fac.filter((f) => f.kind === 'K' && f.city === a.city && (!a.local || f.localCd === a.local)).length;
+    // 발달재활서비스: 만 18세 미만 장애아동 대상
+    const devAll = age < 18 ? fac.filter((f) => f.kind === 'D' && f.city === a.city).sort((x, y) => isNew(y) - isNew(x)) : [];
+    const devNear = a.local ? devAll.filter((f) => f.localCd === a.local) : devAll;
+    const devList = devNear.length ? devNear : devAll;
+    const dCards = devList.slice(0, 6).map((f) => `<li class="card">
+        <div class="badges">${isNew(f) ? NEW_BADGE : ''}<span class="badge dev">발달재활서비스</span><span class="badge region">${esc(f.local)}</span></div>
+        <h2>${esc(f.name)}</h2>
+        <p class="addr">${esc([f.addr, f.daddr].filter(Boolean).join(' '))}</p>
+        <div class="actions">${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+      </li>`).join('');
+    const dq = new URLSearchParams({ kind: 'D', city: a.city });
+    if (a.local) dq.set('local', a.local);
+    const devSection = age < 18 ? `<section class="fit-sec" id="sec-dev">
+        <h3>가까운 발달재활서비스 기관 <b>${devNear.length.toLocaleString()}</b>곳${a.local && !devNear.length && devAll.length ? ` <span class="muted">(${esc(a.city)} 전체 ${devAll.length}곳 중 일부)</span>` : ''}</h3>
+        ${devList.length ? `<ul class="cards">${dCards}</ul>` : `<p class="empty">등록된 발달재활서비스 기관이 없어요.</p>`}
+        <p class="hint">발달재활서비스는 만 18세 미만 등록 장애아동이 대상인 바우처예요(주민센터 신청). <b>심리운동·감각운동·언어·미술 등 제공 영역은 공개 데이터에 없어서 기관마다 전화로 확인</b>해 주세요.</p>
+        ${devList.length > 6 ? `<p class="more-link"><a href="#facility?${dq.toString()}">시설 찾기에서 모두 보기 →</a></p>` : ''}
+      </section>` : '';
 
     // ① 지원 안내
     let support;
@@ -373,6 +391,7 @@
         ${vouchers.length ? `<ul class="cards">${vCards}</ul>` : `<p class="empty">${esc(a.city)}에는 나이·장애유형에 맞는 장애인 운동·재활 바우처 기관이 없어요. 지역마다 사업이 달라요.</p>`}
         <p class="hint">바우처 대상·본인부담은 시·군·구마다 달라요. 주민센터나 기관에 문의해 주세요.</p>
       </section>
+      ${devSection}
       <section class="fit-sec">
         <h3>${esc(place)}의 강좌이용권 등록시설 <b>${kCount.toLocaleString()}</b>곳</h3>
         <p class="more-link"><a href="#facility?${fq.toString()}">시설 찾기에서 모두 보기 →</a></p>
