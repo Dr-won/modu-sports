@@ -237,6 +237,8 @@
       ${w.sum ? `<p class="desc">${esc(w.sum)}</p>` : ''}
       ${w.target || w.benefit ? `<details><summary>누가, 무엇을 받나요?</summary>${w.target ? `<p><b>대상</b> ${esc(w.target)}</p>` : ''}${w.benefit ? `<p><b>내용</b> ${esc(w.benefit)}</p>` : ''}</details>` : ''}
       <div class="actions">
+        ${window.modu.ask.button({ kind: 'welfare', name: w.name, service: w.name, link: w.link, apply: w.apply,
+          sub: w.level === 'L' ? (w.sgg || w.city) : '전국', tel: ((w.contact || '').match(/\b(0\d{1,2}-?\d{3,4}-?\d{4}|1\d{3}-?\d{4}|1\d{2})\b/) || [''])[0] }, '📝 신청 방법')}
         ${w.link ? `<a class="act call" href="${esc(w.link)}" target="_blank" rel="noopener" aria-label="${esc(w.name)} 복지로에서 자세히 보기 (새 창)">복지로에서 보기</a>` : ''}
         ${w.contact ? `<span class="act none" title="문의">문의 ${esc(w.contact.length > 22 ? w.contact.slice(0, 22) + '…' : w.contact)}</span>` : ''}
       </div>
@@ -304,7 +306,7 @@
         <div class="badges">${isNew(f) ? NEW_BADGE : ''}<span class="badge dev">발달재활서비스</span><span class="badge region">${esc(f.local)}</span></div>
         <h2>${esc(f.name)}</h2>
         <p class="addr">${esc([f.addr, f.daddr].filter(Boolean).join(' '))}</p>
-        <div class="actions">${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+        <div class="actions">${window.modu.ask.button({ kind: f.kind, name: f.name, tel: f.tel, sub: f.local, areaTxt: f.areaTxt, service: f.kind === 'D' ? '발달재활서비스' : f.sport })}${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
       </li>`).join('');
     const dq = new URLSearchParams({ kind: 'D', city: a.city });
     if (a.local) dq.set('local', a.local);
@@ -349,7 +351,7 @@
         <div class="week" role="img" aria-label="운영 요일 ${DAYS.filter((_, n) => r.days[n] === '1').join('·')}">${DAYS.map((d, n) => `<span class="day${r.days[n] === '1' ? ' on' : ''}" aria-hidden="true">${d}</span>`).join('')}</div>
         <p class="meta"><span>${r.start ? esc(r.start) + '~' + esc(r.end) : '시간 정보 없음'}</span><span class="fee">${r.fee.toLocaleString()}원</span></p>
         <p class="place"><b>${esc(p.name)}</b> · ${esc(p.local)}<br>${esc(p.addr)}</p>
-        <div class="actions">${p.tel ? `<a class="act call" href="tel:${esc(p.tel.replace(/-/g, ''))}">☎ ${esc(p.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${mapQ}" target="_blank" rel="noopener">지도 보기</a></div>
+        <div class="actions">${window.modu.ask.button({ kind: 'course', name: p.name, tel: p.tel, sub: r.name, service: `「${r.name}」 강좌` })}${p.tel ? `<a class="act call" href="tel:${esc(p.tel.replace(/-/g, ''))}">☎ ${esc(p.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${mapQ}" target="_blank" rel="noopener">지도 보기</a></div>
       </li>`;
     }).join('');
 
@@ -358,7 +360,7 @@
         <h2>${esc(f.name)}</h2>
         <p class="desc">${esc(f.sport)}</p>
         <p class="addr">${esc([f.addr, f.daddr].filter(Boolean).join(' '))}</p>
-        <div class="actions">${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+        <div class="actions">${window.modu.ask.button({ kind: f.kind, name: f.name, tel: f.tel, sub: f.local, areaTxt: f.areaTxt, service: f.kind === 'D' ? '발달재활서비스' : f.sport })}${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
       </li>`).join('');
 
     const q = new URLSearchParams();
@@ -387,13 +389,13 @@
         <div class="week" aria-hidden="true">${DAYS.map((d, n) => `<span class="day${r.days[n] === '1' ? ' on' : ''}">${d}</span>`).join('')}</div>
         <p class="meta"><span>${r.start ? esc(r.start) + '~' + esc(r.end) : ''}</span><span class="fee">${r.fee.toLocaleString()}원</span></p>
         <p class="place"><b>${esc(r.place.name)}</b> · ${esc(r.place.local)}</p>
-        <div class="actions">${r.place.tel ? `<a class="act call" href="tel:${esc(r.place.tel.replace(/-/g, ''))}">☎ ${esc(r.place.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(r.place.addr || r.place.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+        <div class="actions">${window.modu.ask.button({ kind: 'course', name: r.place.name, tel: r.place.tel, sub: r.name, service: `「${r.name}」 강좌` })}${r.place.tel ? `<a class="act call" href="tel:${esc(r.place.tel.replace(/-/g, ''))}">☎ ${esc(r.place.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(r.place.addr || r.place.name)}" target="_blank" rel="noopener">지도 보기</a></div>
       </li>`;
     const psyFacCard = (f) => `<li class="card">
         <div class="badges"><span class="badge area">심리운동</span><span class="badge ${f.kind === 'D' ? 'dev">발달재활' : 'voucher">운동·재활 바우처'}</span><span class="badge region">${esc(f.local)}</span></div>
         <h2>${esc(f.name)}</h2>
         <p class="desc">${esc(f.kind === 'D' ? '제공 영역: ' + f.areaTxt : f.sport)}</p>
-        <div class="actions">${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+        <div class="actions">${window.modu.ask.button({ kind: f.kind, name: f.name, tel: f.tel, sub: f.local, areaTxt: f.areaTxt, service: f.kind === 'D' ? '발달재활서비스' : f.sport })}${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
       </li>`;
     const pq = new URLSearchParams({ area: '0', city: a.city });
     if (a.local) pq.set('local', a.local);
