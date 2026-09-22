@@ -4,7 +4,7 @@
 저장 위치: 환경변수 RAW_DIR (기본값 ./_raw). 이 폴더는 사이트에 올라가지 않는다.
 복지로 상세 정보는 pipeline/cache/welfare_detail.json 에 모아 두고, 새로 생기거나 바뀐 서비스만 다시 받는다.
 """
-import json, os, sys, time, urllib.parse, urllib.request, xml.etree.ElementTree as ET
+import json, os, re, sys, time, urllib.parse, urllib.request, xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RAW = os.environ.get('RAW_DIR') or os.path.join(HERE, '..', '_raw')
@@ -58,6 +58,26 @@ def xml_all(url, tag, n, **extra):
         p += 1
 
 
+def file_data(pk, out_name):
+    """공공데이터포털 '파일 데이터'(인증키 불필요)를 받아 RAW 에 저장. 실패하면 False"""
+    try:
+        page = urllib.request.urlopen(urllib.request.Request(f'https://www.data.go.kr/data/{pk}/fileData.do', headers={'User-Agent': 'Mozilla/5.0'}), timeout=60).read().decode('utf-8', 'ignore')
+        uddi = re.search(r'uddi:[0-9a-f-]+', page).group(0)
+        info = urllib.request.urlopen(urllib.request.Request(
+            f'https://www.data.go.kr/tcs/dss/selectFileDataDownload.do?publicDataPk={pk}&fileDetailSn=1&publicDataDetailPk={uddi}',
+            headers={'User-Agent': 'Mozilla/5.0'}), timeout=60).read().decode('utf-8', 'ignore')
+        fid = re.search(r'"atchFileId":"(FILE_\d+)"', info).group(1)
+        data = urllib.request.urlopen(urllib.request.Request(
+            f'https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId={fid}&fileDetailSn=1', headers={'User-Agent': 'Mozilla/5.0'}), timeout=120).read()
+        if len(data) < 200:
+            return False
+        open(os.path.join(RAW, out_name), 'wb').write(data)
+        return True
+    except Exception as e:
+        print(f'  파일 데이터 {pk} 받기 실패: {str(e)[:80]}', flush=True)
+        return False
+
+
 def save(name, rows):
     json.dump(rows, open(os.path.join(RAW, name), 'w', encoding='utf-8'), ensure_ascii=False)
 
@@ -77,6 +97,9 @@ def main():
         save(name, rows)
         counts[name] = len(rows)
         print(name, len(rows), flush=True)
+
+    # 인천광역시 발달재활·언어발달 제공기관 현황 (센터별 '제공영역' — 심리운동 등). 실패하면 build 가 저장본(static)을 씀
+    print('인천 발달재활 제공영역', '받음' if file_data('15103869', 'incheon_dev.csv') else '실패 → 저장본 사용', flush=True)
 
     tot, rows = xml_all('https://apis.data.go.kr/B554287/provider/providerList', 'item', 1000)
     save('ssis_providers.json', rows)
