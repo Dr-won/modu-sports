@@ -122,7 +122,7 @@
     if (el.sport.value) p.set('sport', el.sport.value);
     if (el.q.value.trim()) p.set('q', el.q.value.trim());
     const s = p.toString();
-    if (!location.hash.startsWith('#course') && !location.hash.startsWith('#gap')) history.replaceState(null, '', s ? '#facility?' + s : '#facility');
+    if (location.hash.startsWith('#facility')) history.replaceState(null, '', s ? '#facility?' + s : '#facility');
   }
 
   function readHash() {
