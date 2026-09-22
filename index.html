@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모두의 특수체육 — 장애인 스포츠강좌 찾기</title>
+  <meta name="description" content="장애인스포츠강좌이용권으로 이용할 수 있는 우리 동네 체육시설과 강좌를 찾고, 지역별 공급 현황을 한눈에 봅니다.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">본문 바로가기</a>
+
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="./">
+        <span class="brand-mark" aria-hidden="true">모</span>
+        <span>
+          <strong>모두의 특수체육</strong>
+          <small>장애인 스포츠강좌 찾기</small>
+        </span>
+      </a>
+      <nav class="tabs" aria-label="주요 메뉴">
+        <a href="#facility" class="tab" data-view="facility">시설 찾기</a>
+        <a href="#course" class="tab" data-view="course">강좌 찾기</a>
+        <a href="#gap" class="tab" data-view="gap">지역 공백 보기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+  <section id="view-facility" class="view">
+    <section class="intro">
+      <h1>우리 동네에서<br>장애인이 운동할 수 있는 곳</h1>
+      <p>체육공단 <b>장애인스포츠강좌이용권</b> 등록시설과 보건복지부 <b>장애인 운동 바우처</b>(지역사회서비스투자사업) 제공기관을 한 번에 찾습니다.</p>
+    </section>
+
+    <form id="filters" class="filters" role="search" aria-label="시설 검색 조건">
+      <fieldset class="kinds">
+        <legend>무엇을 찾으세요?</legend>
+        <label><input type="radio" name="kind" value="" checked> 전체</label>
+        <label><input type="radio" name="kind" value="K"> 스포츠강좌이용권 시설</label>
+        <label><input type="radio" name="kind" value="V"> 장애인 운동 바우처 기관</label>
+      </fieldset>
+      <div class="field">
+        <label for="city">시·도</label>
+        <select id="city"><option value="">전체</option></select>
+      </div>
+      <div class="field">
+        <label for="local">시·군·구</label>
+        <select id="local" disabled><option value="">전체</option></select>
+      </div>
+      <div class="field">
+        <label for="sport">종목·서비스</label>
+        <select id="sport"><option value="">전체</option></select>
+      </div>
+      <div class="field field-wide">
+        <label for="q">시설 이름·주소로 찾기</label>
+        <input id="q" type="search" placeholder="예: 수영장, 복지관, ○○동" autocomplete="off">
+      </div>
+      <button type="reset" class="btn-ghost">조건 지우기</button>
+    </form>
+
+    <div class="result-head">
+      <p id="count" class="count" aria-live="polite">불러오는 중…</p>
+      <p class="hint">등록 정보는 바뀔 수 있으니 방문 전에 전화로 확인해 주세요.</p>
+    </div>
+
+    <ul id="list" class="cards"></ul>
+    <div class="more-wrap"><button id="more" class="btn" hidden>더 보기</button></div>
+  </section>
+
+  <section id="view-course" class="view" hidden>
+    <section class="intro">
+      <h1>장애유형에 맞는<br>스포츠강좌 찾기</h1>
+      <p>장애인스포츠강좌이용권으로 들을 수 있는 강좌를 <b>장애유형 · 종목 · 요일 · 시간 · 수강료</b>로 찾습니다.</p>
+    </section>
+
+    <form id="cfilters" class="filters" role="search" aria-label="강좌 검색 조건">
+      <fieldset class="kinds" id="cdtype">
+        <legend>누가 들을 강좌인가요? (장애유형)</legend>
+        <label><input type="radio" name="dtype" value="" checked> 전체</label>
+      </fieldset>
+      <fieldset class="kinds days" id="cdays">
+        <legend>원하는 요일 (여러 개 고를 수 있어요)</legend>
+      </fieldset>
+      <div class="field">
+        <label for="csport">종목</label>
+        <select id="csport"><option value="">전체</option></select>
+      </div>
+      <div class="field">
+        <label for="ctime">시간대</label>
+        <select id="ctime">
+          <option value="">전체</option>
+          <option value="am">오전 (12시 전 시작)</option>
+          <option value="pm">오후 (12~18시 시작)</option>
+          <option value="ev">저녁 (18시 이후 시작)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cfee">수강료</label>
+        <select id="cfee">
+          <option value="">전체</option>
+          <option value="50000">5만 원 이하</option>
+          <option value="100000">10만 원 이하</option>
+          <option value="150000">15만 원 이하</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ccity">시·도</label>
+        <select id="ccity"><option value="">전체</option></select>
+      </div>
+      <div class="field">
+        <label for="clocal">시·군·구</label>
+        <select id="clocal" disabled><option value="">전체</option></select>
+      </div>
+      <div class="field field-wide">
+        <label for="cq">강좌 이름으로 찾기</label>
+        <input id="cq" type="search" placeholder="예: 자유수영, 태권도교실, 재활" autocomplete="off">
+      </div>
+      <button type="reset" class="btn-ghost">조건 지우기</button>
+    </form>
+
+    <div class="result-head">
+      <p id="ccount" class="count" aria-live="polite">불러오는 중…</p>
+      <p class="hint" id="chint">강좌 정보는 바뀔 수 있으니 신청 전에 시설에 확인해 주세요.</p>
+    </div>
+
+    <ul id="clist" class="cards"></ul>
+    <div class="more-wrap"><button id="cmore" class="btn" hidden>더 보기</button></div>
+  </section>
+
+  <section id="view-gap" class="view viz-root" hidden>
+    <section class="intro">
+      <h1>어느 지역이<br>장애인 체육 자원이 부족할까요?</h1>
+      <p>시도별 <b>등록장애인 1만 명당</b> 시설·강좌 수를 비교합니다. 막대를 누르면 그 시도의 시군구별 현황이 나옵니다.</p>
+    </section>
+
+    <div class="tiles" id="gtiles" aria-live="polite"></div>
+
+    <form id="gfilters" class="filters gfilters" aria-label="지표 선택">
+      <div class="field">
+        <label for="gmetric">무엇을 비교할까요?</label>
+        <select id="gmetric">
+          <option value="fac">스포츠강좌이용권 등록시설</option>
+          <option value="crs">장애유형별 강좌 (위치 확인된 강좌)</option>
+          <option value="vou">장애인 운동 바우처 기관</option>
+          <option value="use">강좌이용권 이용 기록 (합성 데이터)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ggroup">장애유형</label>
+        <select id="ggroup" disabled></select>
+      </div>
+      <div class="field">
+        <label for="gbase">기준</label>
+        <select id="gbase">
+          <option value="per">등록장애인 1만 명당</option>
+          <option value="abs">전체 개수</option>
+        </select>
+      </div>
+      <button type="button" id="gtoggle" class="btn-ghost" aria-pressed="false">표로 보기</button>
+    </form>
+
+    <figure class="chart-card">
+      <figcaption id="gcaption" class="chart-title"></figcaption>
+      <div id="gchart" class="bars" role="list"></div>
+      <div id="gtable" class="table-wrap" hidden></div>
+      <p class="chart-note" id="gnote"></p>
+    </figure>
+
+    <section class="chart-card" id="glocal" hidden>
+      <h2 class="chart-title" id="glocal-title"></h2>
+      <p class="chart-note">시군구별 장애인 인구는 공개 데이터가 없어 개수로만 보여 드립니다. 0곳인 칸은 <span class="zero">없음</span>으로 표시했습니다.</p>
+      <div class="table-wrap"><table class="gt" id="glocal-table"></table></div>
+    </section>
+
+    <div id="gtip" class="tip" role="tooltip" hidden></div>
+  </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p><strong>데이터 출처</strong> (공공데이터포털 data.go.kr, <span id="updated">2026-09-22</span> 기준)</p>
+      <p>· 서울올림픽기념국민체육진흥공단 「장애인스포츠강좌이용권 등록시설 정보」 「장애인스포츠강좌이용권 등록강좌 정보」<br>· 한국사회보장정보원 「사회서비스 제공기관 정보 검색」 중 장애인 대상 운동 서비스<br>· 서울올림픽기념국민체육진흥공단 「스포츠강좌이용권 등록시설 정보」(강좌 위치 연결), 「장애인스포츠강좌이용권 이용실적(합성)」<br>· 보건복지부 「등록장애인 수_장애종별_시도별」(2024년)</p>
+      <p>모두의 특수체육 · 2026 국민체육진흥공단 공공데이터 활용 경진대회 출품작</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="course.js"></script>
+  <script src="gap.js"></script>
+  <script src="router.js"></script>
+</body>
+</html>
