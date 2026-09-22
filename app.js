@@ -15,7 +15,8 @@
     .then((r) => r.json())
     .then((data) => {
       $('updated').textContent = data.updated;
-      rows = data.rows.map((r) => ({
+      // 시설 찾기에는 운동·재활 서비스만 (안마·렌탈 같은 그 밖의 장애인 사회서비스는 '나의 맞춤'에서 안내)
+      rows = data.rows.filter((r) => r[0] !== 'V' || r[11] === 1).map((r) => ({
         kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8],
         text: (r[1] + ' ' + r[2] + ' ' + r[6] + ' ' + r[7]).toLowerCase(),
       }));
@@ -42,7 +43,7 @@
   }
 
   const kindValue = () => (el.form.querySelector('input[name="kind"]:checked') || {}).value || '';
-  const KIND_LABEL = { K: '스포츠강좌이용권 종목', V: '장애인 운동 바우처 서비스' };
+  const KIND_LABEL = { K: '스포츠강좌이용권 종목', V: '장애인 운동·재활 바우처 서비스' };
 
   // 종목(강좌이용권)과 서비스명(바우처)을 구분별로 묶어 보여 줌. 고른 지역에 있는 것만, 그 지역 숫자로
   function fillSports() {
@@ -80,7 +81,7 @@
     const nK = hits.filter((r) => r.kind === 'K').length, nV = hits.length - nK;
     const parts = [];
     if (nK) parts.push(`강좌이용권 시설 <b>${nK.toLocaleString()}</b>곳`);
-    if (nV) parts.push(`운동 바우처 기관 <b>${nV.toLocaleString()}</b>곳`);
+    if (nV) parts.push(`운동·재활 바우처 기관 <b>${nV.toLocaleString()}</b>곳`);
     el.count.innerHTML = `${place ? esc(place) + ' · ' : ''}${parts.join(', ') || '<b>0</b>곳'}`;
     if (!hits.length) {
       el.list.innerHTML = '<li class="empty">조건에 맞는 시설이 없습니다.<br>종목을 "전체"로 바꾸거나 옆 지역을 골라 보세요.</li>';
@@ -102,7 +103,7 @@
       : '<span class="act none">전화번호 미등록</span>';
     return `<li class="card">
       <div class="badges">${r.kind === 'V'
-        ? `<span class="badge voucher">운동 바우처</span><span class="badge voucher">${esc(r.sport)}</span>`
+        ? `<span class="badge voucher">운동·재활 바우처</span><span class="badge voucher">${esc(r.sport)}</span>`
         : `<span class="badge">강좌이용권</span><span class="badge">${esc(r.sport)}</span>`}<span class="badge region">${esc(r.city)} ${esc(r.local)}</span></div>
       <h2>${esc(r.name)}</h2>
       <p class="addr">${esc(full)}</p>
