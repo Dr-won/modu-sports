@@ -4,11 +4,11 @@
   const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
   const $ = (id) => document.getElementById(id);
   const el = {
-    form: $('cfilters'), dtype: $('cdtype'), days: $('cdays'), sport: $('csport'), time: $('ctime'), fee: $('cfee'),
+    form: $('cfilters'), area: $('carea'), dtype: $('cdtype'), days: $('cdays'), sport: $('csport'), time: $('ctime'), fee: $('cfee'),
     city: $('ccity'), local: $('clocal'), q: $('cq'), list: $('clist'), count: $('ccount'), more: $('cmore'), hint: $('chint'),
   };
 
-  let loaded = false, dtypes = [], places = [], rows = [], hits = [], shown = 0;
+  let loaded = false, dtypes = [], areas = [], places = [], rows = [], hits = [], shown = 0;
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const opt = (value, label) => `<option value="${esc(value)}">${esc(label)}</option>`;
@@ -22,10 +22,11 @@
       .then((r) => r.json())
       .then((data) => {
         dtypes = data.dtypes;
+        areas = data.areas || [];
         places = data.places.map((p) => ({ name: p[0], city: p[1], localCd: p[2], local: p[3], addr: p[4], daddr: p[5], tel: p[6] }));
         rows = data.rows.map((r) => ({
           name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7],
-          place: r[8] >= 0 ? places[r[8]] : null, text: (r[0] + ' ' + r[1] + ' ' + r[7]).toLowerCase(),
+          place: r[8] >= 0 ? places[r[8]] : null, text: (r[0] + ' ' + r[1] + ' ' + r[7]).toLowerCase(), areas: r[10] || 0,
         }));
         build();
         readHash();
@@ -35,6 +36,9 @@
   }
 
   function build() {
+    const acnt = areas.map((_, i) => rows.filter((r) => r.areas & (1 << i)).length);
+    el.area.insertAdjacentHTML('beforeend', areas.map((a, i) =>
+      `<label${i === 0 ? ' class="star"' : ''}><input type="radio" name="area" value="${i}"> ${esc(a)} <span class="muted">${acnt[i].toLocaleString()}</span></label>`).join(''));
     el.dtype.insertAdjacentHTML('beforeend', dtypes.map((d, i) =>
       `<label><input type="radio" name="dtype" value="${i}"> ${esc(d)}</label>`).join(''));
     el.days.insertAdjacentHTML('beforeend', DAYS.map((d, i) =>
@@ -56,10 +60,10 @@
   // 고른 장애유형·지역에 있는 종목만, 그 조건의 강좌 수로 보여 줌
   function fillSports() {
     const keep = el.sport.value, dt = checkedDtype(), city = el.city.value, local = el.local.value;
-    const bit = dt === '' ? 0 : 1 << +dt;
+    const bit = dt === '' ? 0 : 1 << +dt, ar = checkedArea(), abit = ar === '' ? 0 : 1 << +ar;
     const cnt = {};
     rows.forEach((r) => {
-      if ((bit && !(r.mask & bit)) || (city && !(r.place && r.place.city === city)) || (local && !(r.place && r.place.localCd === local))) return;
+      if ((bit && !(r.mask & bit)) || (abit && !(r.areas & abit)) || (city && !(r.place && r.place.city === city)) || (local && !(r.place && r.place.localCd === local))) return;
       cnt[r.sport] = (cnt[r.sport] || 0) + 1;
     });
     el.sport.innerHTML = opt('', '전체') + Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a])
@@ -77,6 +81,7 @@
   }
 
   const checkedDtype = () => (el.form.querySelector('input[name="dtype"]:checked') || {}).value || '';
+  const checkedArea = () => (el.form.querySelector('input[name="area"]:checked') || {}).value || '';
   const checkedDays = () => [...el.form.querySelectorAll('input[name="day"]:checked')].map((c) => +c.value);
 
   function inTime(start, band) {
@@ -91,8 +96,9 @@
     const fee = +el.fee.value || 0, city = el.city.value, local = el.local.value;
     const words = el.q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const bit = dt === '' ? 0 : 1 << +dt;
+    const ar = checkedArea(), abit = ar === '' ? 0 : 1 << +ar;
     hits = rows.filter((r) =>
-      (!bit || (r.mask & bit)) &&
+      (!bit || (r.mask & bit)) && (!abit || (r.areas & abit)) &&
       (!days.length || days.some((d) => r.days[d] === '1')) &&
       (!sport || r.sport === sport) && inTime(r.start, band) && (!fee || r.fee <= fee) &&
       (!city || (r.place && r.place.city === city)) && (!local || (r.place && r.place.localCd === local)) &&
@@ -134,7 +140,7 @@
       where = '<p class="place none">시설 위치 정보가 없는 강좌입니다. 강좌 설명의 연락처를 참고해 주세요.</p>';
     }
     return `<li class="card">
-      <div class="badges"><span class="badge">${esc(r.sport)}</span>${types.map((t) => `<span class="badge dtype">${esc(t)}</span>`).join('')}</div>
+      <div class="badges">${areas.filter((_, i) => r.areas & (1 << i)).map((a) => `<span class="badge area">${esc(a)}</span>`).join('')}<span class="badge">${esc(r.sport)}</span>${types.map((t) => `<span class="badge dtype">${esc(t)}</span>`).join('')}</div>
       <h2>${esc(r.name)}</h2>
       <div class="week" role="img" aria-label="운영 요일 ${weekText}">${week}</div>
       <p class="meta"><span>${time}</span><span class="fee">${won(r.fee)}</span></p>
@@ -145,6 +151,7 @@
 
   function writeHash() {
     const p = new URLSearchParams();
+    if (checkedArea() !== '') p.set('area', checkedArea());
     if (checkedDtype() !== '') p.set('dtype', checkedDtype());
     const days = checkedDays(); if (days.length) p.set('days', days.join(''));
     if (el.sport.value) p.set('sport', el.sport.value);
@@ -163,6 +170,8 @@
     const p = new URLSearchParams(location.hash.slice(i + 1));
     const d = el.form.querySelector(`input[name="dtype"][value="${p.get('dtype') || ''}"]`);
     if (d) d.checked = true;
+    const ar = el.form.querySelector(`input[name="area"][value="${p.get('area') || ''}"]`);
+    if (ar) ar.checked = true;
     (p.get('days') || '').split('').forEach((n) => { const c = el.form.querySelector(`input[name="day"][value="${n}"]`); if (c) c.checked = true; });
     ['sport', 'time', 'fee'].forEach((k) => { if (p.get(k)) el[k].value = p.get(k); });
     if (p.get('city')) { el.city.value = p.get('city'); fillLocals(); }
@@ -177,7 +186,7 @@
   el.form.addEventListener('change', (e) => {
     if (e.target === el.q) return;
     if (e.target === el.city) fillLocals();
-    if (e.target === el.city || e.target === el.local || e.target.name === 'dtype') fillSports();
+    if (e.target === el.city || e.target === el.local || e.target.name === 'dtype' || e.target.name === 'area') fillSports();
     search();
   });
   el.q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(search, 200); });
