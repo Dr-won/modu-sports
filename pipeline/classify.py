@@ -33,6 +33,29 @@ MILD = re.compile(r'중증장애인이 아닌|중증장애인은 제외|장애�
 LOW = re.compile(r'저소득|기초생활|수급자|차상위|소득인정액|중위소득')
 
 
+# 특수체육 프로그램 영역 — 체육공단 강좌는 종목 칸에 '기타종목'으로만 적혀 있어 이름·설명에서 찾아냄
+PROGRAM_AREAS = [
+    ('심리운동', re.compile(r'심리\s*운동|psycho\s*motor|[싸사]이코\s*모터', re.I)),
+    ('감각통합', re.compile(r'감각\s*통합|감각\s*운동|감각\s*발달|감각\s*재활')),
+    ('운동발달', re.compile(r'운동\s*발달|발달\s*운동|대근육|소근육|운동\s*재활')),
+    ('특수체육', re.compile(r'특수\s*체육|적응\s*체육|특수\s*놀이\s*체육|장애인\s*체육')),
+]
+AREA_NAMES = [a for a, _ in PROGRAM_AREAS]
+
+
+def areas_mask(text):
+    return sum(1 << i for i, (_, rx) in enumerate(PROGRAM_AREAS) if rx.search(text or ''))
+
+
+# 인천시 발달재활 '제공영역' 표기 → 같은 영역 이름으로
+DEV_AREA_MAP = {
+    '심리운동': '심리운동', '심리운동재활': '심리운동',
+    '감각발달재활': '감각통합', '감각재활': '감각통합', '감각통합재활': '감각통합',
+    '운동발달재활': '운동발달', '운동재활': '운동발달',
+    '특수체육': '특수체육', '기타(특수체육)': '특수체육',
+}
+
+
 def targets_of(text):
     t = [name for name, rx in TARGET_WORDS if rx.search(text)]
     return '|'.join(t) if t else '*'
