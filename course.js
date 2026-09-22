@@ -40,10 +40,7 @@
     el.days.insertAdjacentHTML('beforeend', DAYS.map((d, i) =>
       `<label><input type="checkbox" name="day" value="${i}"> ${d}</label>`).join(''));
 
-    const cnt = {};
-    rows.forEach((r) => { cnt[r.sport] = (cnt[r.sport] || 0) + 1; });
-    el.sport.innerHTML = opt('', '전체') + Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a])
-      .map((s) => opt(s, `${s} (${cnt[s].toLocaleString()})`)).join('');
+    fillSports();
 
     if (places.length) {
       const cities = [...new Set(places.map((p) => p.city))].sort((a, b) => a.localeCompare(b, 'ko'));
@@ -54,6 +51,20 @@
       el.city.disabled = true;
       el.hint.textContent = '강좌 위치 연결은 준비 중입니다. 지금은 장애유형·종목·요일·시간·수강료로 찾을 수 있어요.';
     }
+  }
+
+  // 고른 장애유형·지역에 있는 종목만, 그 조건의 강좌 수로 보여 줌
+  function fillSports() {
+    const keep = el.sport.value, dt = checkedDtype(), city = el.city.value, local = el.local.value;
+    const bit = dt === '' ? 0 : 1 << +dt;
+    const cnt = {};
+    rows.forEach((r) => {
+      if ((bit && !(r.mask & bit)) || (city && !(r.place && r.place.city === city)) || (local && !(r.place && r.place.localCd === local))) return;
+      cnt[r.sport] = (cnt[r.sport] || 0) + 1;
+    });
+    el.sport.innerHTML = opt('', '전체') + Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a])
+      .map((s) => opt(s, `${s} (${cnt[s].toLocaleString()})`)).join('');
+    if (cnt[keep]) el.sport.value = keep;
   }
 
   function fillLocals() {
@@ -157,17 +168,21 @@
     if (p.get('city')) { el.city.value = p.get('city'); fillLocals(); }
     if (p.get('local')) el.local.value = p.get('local');
     if (p.get('q')) el.q.value = p.get('q');
+    const sport = p.get('sport');
+    fillSports();
+    if (sport) el.sport.value = sport;
   }
 
   let timer;
   el.form.addEventListener('change', (e) => {
     if (e.target === el.q) return;
     if (e.target === el.city) fillLocals();
+    if (e.target === el.city || e.target === el.local || e.target.name === 'dtype') fillSports();
     search();
   });
   el.q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(search, 200); });
   el.form.addEventListener('submit', (e) => { e.preventDefault(); search(); });
-  el.form.addEventListener('reset', () => setTimeout(() => { fillLocals(); search(); }, 0));
+  el.form.addEventListener('reset', () => setTimeout(() => { fillLocals(); fillSports(); search(); }, 0));
   el.more.addEventListener('click', render);
 
   window.courseView = { activate };
