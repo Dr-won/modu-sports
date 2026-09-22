@@ -50,6 +50,26 @@ def auto_social(name):
                 ex=1 if EXERCISE.search(name) else 0, degree='', why='서비스명 자동 분류')
 
 
+# 장애 전용 바우처 사업(장애아동가족지원·발달장애인지원·장애인활동지원)의 서비스별 분류.
+# ex: 1 운동·재활 / 0 그 밖 사회서비스 / 2 발달재활(장애아동, 심리운동 등 제공 영역은 데이터에 없음)
+DISABILITY_PROGRAMS = {
+    '발달재활': dict(targets='*', age='child', ex=2, why='장애아동 발달재활서비스(만 18세 미만)'),
+    '언어발달': dict(targets='*', age='child', ex=0, why='장애부모 가정 아동 언어발달지원'),
+    '부모상담지원': dict(targets='*', age='child', ex=0, why='장애아동 부모 상담'),
+    '발달장애인 주간활동서비스': dict(targets='지적·자폐', age='adult', ex=0, why='성인 발달장애인'),
+    '청소년 발달장애인 방과후활동서비스': dict(targets='지적·자폐', age='child', ex=0, why='청소년 발달장애인'),
+    '최중증발달장애인 통합돌봄서비스': dict(targets='지적·자폐', age='', ex=0, why='최중증 발달장애인'),
+    '장애인활동지원': dict(targets='*', age='', ex=0, why='장애인활동지원'),
+}
+
+
+def auto_program(name):
+    p = DISABILITY_PROGRAMS.get(name)
+    if not p:
+        return dict(include=0, targets='*', age='', ex=0, degree='', why='대상 사업 아님(예: 시도 추가지원은 같은 기관 반복)')
+    return dict(include=1, degree='', **p)
+
+
 def auto_welfare(name, target_text, life, summary=''):
     """복지로 서비스(이미 '장애인' 가구유형으로 걸러진 것) → 분류. 이름·요약을 먼저, 대상 원문은 보조로 본다."""
     targets = targets_of(name)
