@@ -257,14 +257,16 @@ for r in csv.DictReader(open(os.path.join(STATIC, 'usage_synthetic.csv'), encodi
     use_sido[CODE_SIDO.get(r['시도코드'], '?')] += 1
     use_local[old_code.get(r['시군구코드'], r['시군구코드'])] += 1
 
-fac_sido, vou_sido, crs_sido = collections.Counter(), collections.Counter(), {s: collections.Counter() for s in SIDO_ORDER}
+fac_sido, vou_sido, dev_sido, psy_sido = collections.Counter(), collections.Counter(), collections.Counter(), collections.Counter()
+crs_sido = {s: collections.Counter() for s in SIDO_ORDER}
 local = {}
+NEW_LOCAL = lambda sido, name: {'sido': sido, 'name': name, 'K': 0, 'V': 0, 'C': 0, 'D': 0, 'P': 0}
 for r in rows:
-    if r[0] == 'D' or (r[0] == 'V' and r[11] != 1):  # '운동·재활 바우처'는 운동·재활 서비스만 셈
+    if r[0] == 'V' and r[11] != 1:  # '운동·재활 바우처'는 운동·재활 서비스만 셈
         continue
-    L = local.setdefault(r[4], {'sido': r[3], 'name': r[5], 'K': 0, 'V': 0, 'C': 0})
+    L = local.setdefault(r[4], NEW_LOCAL(r[3], r[5]))
     L[r[0]] += 1
-    (fac_sido if r[0] == 'K' else vou_sido)[r[3]] += 1
+    {'K': fac_sido, 'V': vou_sido, 'D': dev_sido}[r[0]][r[3]] += 1
 for c in courses:
     if c[8] < 0:
         continue
@@ -275,13 +277,17 @@ for c in courses:
     for i, d in enumerate(DTYPES):
         if c[2] & (1 << i):
             crs_sido[p[1]][d] += 1
-    L = local.setdefault(p[2], {'sido': p[1], 'name': p[3], 'K': 0, 'V': 0, 'C': 0})
+    L = local.setdefault(p[2], NEW_LOCAL(p[1], p[3]))
     L['C'] += 1
+    if c[10] & 1:  # 심리운동 강좌
+        L['P'] += 1
+        psy_sido[p[1]] += 1
 
 gap = {'updated': TODAY, 'disYear': DIS_YEAR, 'groups': ['전체'] + list(DIS_GROUP),
-       'sido': [{'name': s, 'dis': dict(dis[s]), 'fac': fac_sido[s], 'vou': vou_sido[s], 'crs': dict(crs_sido[s]), 'use': use_sido[s]}
-                for s in SIDO_ORDER],
-       'local': sorted([[v['sido'], k, v['name'], v['K'], v['V'], v['C'], use_local.get(k, 0)] for k, v in local.items()],
+       'sido': [{'name': s, 'dis': dict(dis[s]), 'fac': fac_sido[s], 'vou': vou_sido[s], 'dev': dev_sido[s], 'psy': psy_sido[s],
+                 'crs': dict(crs_sido[s]), 'use': use_sido[s]} for s in SIDO_ORDER],
+       'localFields': ['시도', '시군구코드', '시군구', '강좌이용권 등록시설', '운동·재활 바우처', '강좌(위치 확인분)', '이용 기록(합성)', '발달재활 기관', '심리운동 강좌'],
+       'local': sorted([[v['sido'], k, v['name'], v['K'], v['V'], v['C'], use_local.get(k, 0), v['D'], v['P']] for k, v in local.items()],
                        key=lambda x: (x[0], x[2]))}
 
 # ── 이상 점검: 이전보다 30% 넘게 줄면 멈춤 ─────────────
