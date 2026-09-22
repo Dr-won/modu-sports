@@ -1,27 +1,28 @@
-// 모두의 특수체육 — 맞춤 찾기
-// 답한 내용은 이 기기 안에서만 계산하고 저장·전송하지 않는다.
+// 모두의 특수체육 — 홈: 나의 정보 → 맞춤 복지서비스 · 맞춤 운동
+// 답한 내용은 이 기기 안에서만 계산한다. 사용자가 [저장]을 누를 때만 이 브라우저(localStorage)에 남기고, 서버로는 보내지 않는다.
 (function () {
+  const STORE = 'modu.profile.v1';
   const $ = (id) => document.getElementById(id);
   const el = { wizard: $('fit-wizard'), bar: $('fit-bar'), count: $('fit-count'), step: $('fit-step'), prev: $('fit-prev'), next: $('fit-next'), result: $('fit-result') };
   const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
   const VOUCHER_MAX = 110000; // 2026년 장애인스포츠강좌이용권 월 지원 한도
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  let loaded = false, dtypes = [], courses = [], fac = [], regions = {}, sports = [];
+  let loaded = false, dtypes = [], courses = [], fac = [], regions = {}, sports = [], welfare = [];
   let i = 0;
   const a = { who: '', age: '', dtype: '', degree: '', income: '', city: '', local: '', days: [], time: '', sport: '' };
 
   const STEPS = [
-    { key: 'who', q: () => '누가 운동하나요?', type: 'choice', options: () => [['self', '본인'], ['family', '자녀·가족']] },
-    { key: 'age', q: () => a.who === 'family' ? '운동할 분의 나이(만 나이)는요?' : '나이(만 나이)가 어떻게 되세요?', type: 'age' },
+    { key: 'who', q: () => '누구의 정보를 넣을까요?', type: 'choice', options: () => [['self', '나(본인)'], ['family', '자녀·가족']] },
+    { key: 'age', q: () => a.who === 'family' ? '그분의 나이(만 나이)는요?' : '나이(만 나이)가 어떻게 되세요?', type: 'age' },
     { key: 'dtype', q: () => '장애유형을 골라 주세요', type: 'choice',
       options: () => dtypes.map((d, n) => [String(n), d]).concat([['', '잘 모르겠어요']]) },
     { key: 'degree', q: () => '장애 정도는요?', type: 'choice',
       options: () => [['severe', '심한 장애'], ['mild', '심하지 않은 장애'], ['unknown', '잘 모르겠어요']],
-      note: '장애등급제는 2019년에 폐지되어 지금은 두 단계로 나뉘어요.' },
+      note: '장애등급제는 2019년에 폐지되어 지금은 두 단계로 나뉘어요. "심한 장애"가 예전 중증(1~3급)에 해당해요.' },
     { key: 'income', q: () => '가구의 소득 구분은요?', type: 'choice',
       options: () => [['basic', '기초생활수급자'], ['near', '차상위계층 · 법정 한부모가족'], ['none', '해당 없음'], ['unknown', '잘 모르겠어요']],
-      note: '강좌이용권 선정 우선순위를 안내하는 데만 써요.' },
+      note: '강좌이용권 우선순위와 복지서비스 안내에만 써요.' },
     { key: 'region', q: () => '어디에 사세요?', type: 'region' },
     { key: 'days', q: () => '운동할 수 있는 요일과 시간대는요?', type: 'days', note: '고르지 않으면 모든 요일·시간을 보여 드려요.' },
     { key: 'sport', q: () => '관심 있는 종목이 있나요?', type: 'sport' },
@@ -31,8 +32,9 @@
     if (loaded) return;
     loaded = true;
     el.step.innerHTML = '<p class="hint">불러오는 중…</p>';
-    Promise.all([fetch('data/courses.json').then((r) => r.json()), fetch('data/facilities.json').then((r) => r.json())])
-      .then(([c, f]) => {
+    Promise.all([fetch('data/courses.json').then((r) => r.json()), fetch('data/facilities.json').then((r) => r.json()), fetch('data/welfare.json').then((r) => r.json())])
+      .then(([c, f, w]) => {
+        welfare = w.rows.map((r) => ({ level: r[0], name: r[1], sum: r[2], target: r[3], benefit: r[4], type: r[5], cycle: r[6], contact: r[7], link: r[8], life: r[9], who: r[10], city: r[11], sgg: r[12], apply: r[13] }));
         dtypes = c.dtypes;
         const places = c.places.map((p) => ({ name: p[0], city: p[1], localCd: p[2], local: p[3], addr: p[4], daddr: p[5], tel: p[6] }));
         courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null }));
@@ -41,7 +43,8 @@
         const cnt = {};
         courses.forEach((r) => { cnt[r.sport] = (cnt[r.sport] || 0) + 1; });
         sports = Object.keys(cnt).sort((x, y) => cnt[y] - cnt[x]);
-        draw();
+        const saved = loadProfile();
+        if (saved) { Object.assign(a, saved); result(); } else draw();
       })
       .catch(() => { el.step.innerHTML = '<p class="hint">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>'; });
   }
@@ -141,6 +144,95 @@
     return a.time === 'am' ? h < 12 : a.time === 'pm' ? h >= 12 && h < 18 : h >= 18;
   }
 
+  // ── 나의 정보 저장 (이 브라우저에만) ───────────
+  const KEYS = ['who', 'age', 'dtype', 'degree', 'income', 'city', 'local', 'days', 'time', 'sport'];
+  function loadProfile() {
+    try { const p = JSON.parse(localStorage.getItem(STORE) || 'null'); return p && p.city ? p : null; } catch (e) { return null; }
+  }
+  function saveProfile() {
+    const p = {};
+    KEYS.forEach((k) => { p[k] = a[k]; });
+    ['who', 'dtype', 'degree', 'income'].forEach((k) => { p[k + 'Set'] = true; });
+    try { localStorage.setItem(STORE, JSON.stringify(p)); return true; } catch (e) { return false; }
+  }
+  function clearProfile() { try { localStorage.removeItem(STORE); } catch (e) { /* 저장소를 못 쓰는 브라우저 */ } }
+
+  // ── 복지서비스 고르기 ────────────────────────
+  function lifeStage(age) {
+    return age <= 5 ? '영유아' : age <= 12 ? '아동' : age <= 18 ? '청소년' : age <= 34 ? '청년' : age <= 64 ? '중장년' : '노년';
+  }
+  // 서비스명에 특정 장애유형이 드러나면 그 유형만 (예: 발달장애 → 지적·자폐)
+  const TYPE_WORDS = [[/발달장애|자폐|지적장애/, '지적·자폐'], [/시각/, '시각'], [/청각|농아|수어|난청|인공달팽이/, '청각·언어'], [/뇌병변/, '뇌병변'], [/지체/, '지체']];
+  function welfareFor(age) {
+    const stage = lifeStage(age), dname = a.dtype === '' ? '' : dtypes[+a.dtype];
+    const localName = a.local ? regions[a.city][a.local] : '';
+    const ok = (w) => {
+      if (w.life.length && !w.life.includes(stage)) return false;
+      if (/중증/.test(w.name) && a.degree === 'mild') return false;
+      if (/장애아|장애아동/.test(w.name) && age > 18) return false;
+      const types = TYPE_WORDS.filter(([re]) => re.test(w.name)).map(([, t]) => t);
+      if (dname && types.length && !types.includes(dname)) return false;
+      return true;
+    };
+    const score = (w) => (/장애|발달|중증/.test(w.name) ? 3 : 0) + (w.who.length === 1 ? 2 : 0) +
+      (w.sgg && w.sgg === localName ? 2 : 0) - (isLow(w) && a.income === 'none' ? 4 : 0);
+    const sort = (list) => list.sort((x, y) => score(y) - score(x));
+    const local = sort(welfare.filter((w) => w.level === 'L' && w.city === a.city && (!w.sgg || w.sgg === '-' || !localName || w.sgg === localName) && ok(w)));
+    const central = sort(welfare.filter((w) => w.level === 'C' && ok(w)));
+    return { local, central, stage, localName };
+  }
+
+  function isLow(w) { return w.who.includes('저소득') || /저소득|수급자|차상위/.test(w.name); }
+
+  function welfareCard(w) {
+    const low = isLow(w);
+    return `<li class="card wcard">
+      <div class="badges">${w.level === 'L' ? `<span class="badge region">${esc(w.sgg && w.sgg !== '-' ? w.sgg : w.city)}</span>` : '<span class="badge region">전국</span>'}${w.type ? `<span class="badge">${esc(w.type)}</span>` : ''}${low ? '<span class="badge voucher">저소득 조건</span>' : ''}</div>
+      <h2>${esc(w.name)}</h2>
+      ${w.sum ? `<p class="desc">${esc(w.sum)}</p>` : ''}
+      ${w.target || w.benefit ? `<details><summary>누가, 무엇을 받나요?</summary>${w.target ? `<p><b>대상</b> ${esc(w.target)}</p>` : ''}${w.benefit ? `<p><b>내용</b> ${esc(w.benefit)}</p>` : ''}</details>` : ''}
+      <div class="actions">
+        ${w.link ? `<a class="act call" href="${esc(w.link)}" target="_blank" rel="noopener" aria-label="${esc(w.name)} 복지로에서 자세히 보기 (새 창)">복지로에서 보기</a>` : ''}
+        ${w.contact ? `<span class="act none" title="문의">문의 ${esc(w.contact.length > 22 ? w.contact.slice(0, 22) + '…' : w.contact)}</span>` : ''}
+      </div>
+    </li>`;
+  }
+
+  function welfareSection(age) {
+    const { local, central, stage } = welfareFor(age);
+    const list = (arr, id) => `<ul class="cards" id="${id}">${arr.slice(0, 6).map(welfareCard).join('')}</ul>` +
+      (arr.length > 6 ? `<div class="more-wrap"><button type="button" class="btn-ghost" data-more="${id}">${arr.length - 6}개 더 보기</button></div>` : '');
+    window.__welfare = { local, central };
+    return `<section class="fit-sec" id="sec-welfare">
+      <h3>나에게 맞는 복지서비스 <b>${(local.length + central.length).toLocaleString()}</b>개 <span class="muted">(${esc(stage)} · 장애인 대상)</span></h3>
+      <h4 class="subh">우리 지역 서비스 <b>${local.length}</b>개</h4>
+      ${local.length ? list(local, 'wl-local') : '<p class="empty">우리 지역에 등록된 장애인 대상 지자체 서비스가 없어요.</p>'}
+      <h4 class="subh">전국 공통 서비스 <b>${central.length}</b>개</h4>
+      ${central.length ? list(central, 'wl-central') : ''}
+      <p class="hint">복지로(한국사회보장정보원) 공개 정보로 고른 <b>받을 수 있을 가능성이 있는</b> 서비스예요. 실제 자격은 소득·장애 정도 등 기준에 따라 기관이 정해요. 가까운 주민센터(행정복지센터)나 129 보건복지상담센터에 문의해 주세요.</p>
+    </section>`;
+  }
+
+  function profileCard(saved) {
+    const dname = a.dtype === '' ? '장애유형 모름' : dtypes[+a.dtype];
+    const deg = { severe: '심한 장애', mild: '심하지 않은 장애', unknown: '장애 정도 모름' }[a.degree] || '';
+    const inc = { basic: '기초생활수급', near: '차상위·한부모', none: '소득 조건 해당 없음', unknown: '소득 구분 모름' }[a.income] || '';
+    const localName = a.local ? regions[a.city][a.local] : '';
+    const chips = [a.who === 'family' ? '자녀·가족' : '본인', `만 ${a.age}세`, dname, deg, inc, `${a.city}${localName ? ' ' + localName : ''}`]
+      .filter(Boolean).map((c) => `<span class="chip">${esc(c)}</span>`).join('');
+    return `<div class="profile">
+      <div class="profile-top"><p class="fit-tag">나의 정보</p>
+        <div class="profile-btns">
+          <button type="button" class="btn-ghost sm" id="fit-edit">수정하기</button>
+          ${saved ? '<button type="button" class="btn-ghost sm" id="fit-clear">이 기기에서 지우기</button>' : '<button type="button" class="btn sm" id="fit-save">이 기기에 저장</button>'}
+        </div>
+      </div>
+      <div class="chips">${chips}</div>
+      <p class="hint" id="fit-savemsg">${saved ? '이 기기(브라우저)에만 저장되어 있어요. 서버로 보내지 않아요.' : '저장하면 다음에 들어올 때 바로 맞춤 결과를 보여 드려요. 이 기기에만 저장돼요.'}</p>
+      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동 바우처</a></nav>
+    </div>`;
+  }
+
   function result() {
     const age = +a.age, bit = a.dtype === '' ? 0 : 1 << +a.dtype;
     const dname = a.dtype === '' ? '' : dtypes[+a.dtype];
@@ -218,17 +310,16 @@
     const cond = [dname && `${dname} 장애`, a.days.length && DAYS.filter((_, n) => a.days.includes(n)).join('·'), a.time && { am: '오전', pm: '오후', ev: '저녁' }[a.time], a.sport].filter(Boolean).join(' · ');
 
     el.result.innerHTML = `
-      <div class="fit-head">
-        <h2>${esc(place)}${cond ? ' · ' + esc(cond) : ''}</h2>
-        <button type="button" class="btn-ghost" id="fit-again">처음부터 다시</button>
-      </div>
+      ${profileCard(!!loadProfile())}
+      ${welfareSection(age)}
+      <section class="fit-sec" id="sec-sport">
+      <h3>나에게 맞는 체육 지원</h3>
       ${support}
-      <section class="fit-sec">
         <h3>맞춤 강좌 <b>${picked.length.toLocaleString()}</b>개 ${picked.length > 12 ? '<span class="muted">(가까운 순 12개)</span>' : ''}</h3>
         ${picked.length ? `<ul class="cards">${courseCards}</ul>` : `<p class="empty">조건에 맞는 강좌가 없어요. 요일·시간이나 종목을 넓혀 보세요.${a.local ? ' 시·군·구를 "전체"로 바꿔 보셔도 좋아요.' : ''}</p>`}
         <p class="more-link"><a href="#course?${q.toString()}">강좌 찾기에서 조건 바꿔 더 보기 →</a></p>
       </section>
-      <section class="fit-sec">
+      <section class="fit-sec" id="sec-voucher">
         <h3>가까운 장애인 운동 바우처 기관 <b>${nearV.length}</b>곳${a.local && !nearV.length && vouchers.length ? ` <span class="muted">(${esc(a.city)} 전체 ${vouchers.length}곳 중 일부)</span>` : ''}</h3>
         ${vouchers.length ? `<ul class="cards">${vCards}</ul>` : `<p class="empty">${esc(a.city)}에는 나이·장애유형에 맞는 장애인 운동 바우처 기관이 없어요. 지역마다 사업이 달라요.</p>`}
         <p class="hint">바우처 대상·본인부담은 시·군·구마다 달라요. 주민센터나 기관에 문의해 주세요.</p>
@@ -237,16 +328,41 @@
         <h3>${esc(place)}의 강좌이용권 등록시설 <b>${kCount.toLocaleString()}</b>곳</h3>
         <p class="more-link"><a href="#facility?${fq.toString()}">시설 찾기에서 모두 보기 →</a></p>
       </section>
-      <p class="hint">기준: 2026년 장애인스포츠강좌이용권 공고(지자체 안내), 체육공단·한국사회보장정보원 공공데이터(2026-09-22). 입력한 내용은 저장되지 않아요.</p>`;
+      <p class="hint">기준: 2026년 장애인스포츠강좌이용권 공고(지자체 안내), 체육공단·한국사회보장정보원(복지로) 공공데이터(2026-09-22).</p>`;
     el.wizard.hidden = true;
     el.result.hidden = false;
+    document.querySelector('#view-fit .intro').hidden = true;
     window.scrollTo(0, 0);
-    $('fit-again').addEventListener('click', () => {
-      Object.assign(a, { who: '', age: '', dtype: '', degree: '', income: '', city: '', local: '', days: [], time: '', sport: '' });
-      ['who', 'dtype', 'degree', 'income'].forEach((k) => delete a[k + 'Set']);
-      i = 0; el.result.hidden = true; el.wizard.hidden = false; draw();
-    });
   }
+
+  // 결과 화면 버튼들 (한 번만 연결)
+  el.result.addEventListener('click', (e) => {
+    const t = e.target.closest('button, a');
+    if (!t) return;
+    if (t.id === 'fit-save') {
+      const ok = saveProfile();
+      $('fit-savemsg').textContent = ok ? '저장했어요. 이 기기(브라우저)에만 있고 서버로 보내지 않아요.' : '이 브라우저에서는 저장할 수 없어요.';
+      if (ok) t.outerHTML = '<button type="button" class="btn-ghost sm" id="fit-clear">이 기기에서 지우기</button>';
+    } else if (t.id === 'fit-clear') {
+      clearProfile();
+      $('fit-savemsg').textContent = '이 기기에서 지웠어요.';
+      t.outerHTML = '<button type="button" class="btn sm" id="fit-save">이 기기에 저장</button>';
+    } else if (t.id === 'fit-edit') {
+      i = 0; moved = false;
+      el.result.hidden = true; el.wizard.hidden = false;
+      document.querySelector('#view-fit .intro').hidden = false;
+      draw();
+      window.scrollTo(0, 0);
+    } else if (t.dataset.more) {
+      const id = t.dataset.more, arr = id === 'wl-local' ? window.__welfare.local : window.__welfare.central;
+      $(id).innerHTML = arr.map(welfareCard).join('');
+      t.parentElement.remove();
+    } else if (t.hasAttribute('data-jump')) {
+      e.preventDefault();
+      const target = document.querySelector(t.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 
   window.fitView = { activate };
 })();
