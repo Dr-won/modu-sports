@@ -247,6 +247,9 @@ p.empty { padding: 24px; }
 .gt th:first-child { text-align: left; }
 .gt thead th { font-size: .82rem; color: var(--ink-2); border-bottom: 1.5px solid #c3c2b7; }
 .zero { color: var(--accent); font-weight: 700; }
+.col-help { margin: 0 0 6px; padding-left: 1.1em; color: var(--ink-2); font-size: .86rem; }
+.col-help li { margin: 2px 0; }
+.gt thead th { line-height: 1.35; vertical-align: bottom; }
 .tip {
   position: fixed; z-index: 20; background: #16202a; color: #fff; font-size: .85rem; line-height: 1.5;
   padding: 8px 12px; border-radius: 8px; pointer-events: none; box-shadow: 0 4px 16px rgba(0,0,0,.18);
