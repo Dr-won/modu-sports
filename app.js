@@ -2,7 +2,7 @@
 (function () {
   const PAGE = 30;
   const $ = (id) => document.getElementById(id);
-  const el = { city: $('city'), local: $('local'), sport: $('sport'), q: $('q'), list: $('list'), count: $('count'), more: $('more'), form: $('filters') };
+  const el = { city: $('city'), local: $('local'), sport: $('sport'), q: $('q'), list: $('list'), count: $('count'), more: $('more'), form: $('filters'), psy: $('psyonly') };
 
   let rows = [];
   let hits = [];
@@ -18,7 +18,8 @@
       // 시설 찾기에는 운동·재활 서비스만 (안마·렌탈 같은 그 밖의 장애인 사회서비스는 '나의 맞춤'에서 안내)
       rows = data.rows.filter((r) => r[0] !== 'V' || r[11] === 1).map((r) => ({
         kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8],
-        text: (r[1] + ' ' + r[2] + ' ' + r[6] + ' ' + r[7]).toLowerCase(),
+        areaTxt: r[13] || '', areas: r[14] || 0, visit: r[15] || '',
+        text: (r[1] + ' ' + r[2] + ' ' + r[6] + ' ' + r[7] + ' ' + (r[13] || '')).toLowerCase(),
       }));
       fillCities();
       fillSports();
@@ -68,7 +69,7 @@
     const words = el.q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     hits = rows.filter((r) =>
       (!kind || r.kind === kind) && (!city || r.city === city) && (!local || r.localCd === local) &&
-      (!sport || r.kind + '|' + r.sport === sport) &&
+      (!sport || r.kind + '|' + r.sport === sport) && (!el.psy.checked || (r.areas & 1)) &&
       words.every((w) => r.text.includes(w)));
     shown = 0;
     el.list.innerHTML = '';
@@ -107,7 +108,9 @@
         ? `<span class="badge voucher">운동·재활 바우처</span><span class="badge voucher">${esc(r.sport)}</span>`
         : r.kind === 'D' ? '<span class="badge dev">발달재활서비스</span><span class="badge dev">장애아동</span>'
         : `<span class="badge">강좌이용권</span><span class="badge">${esc(r.sport)}</span>`}<span class="badge region">${esc(r.city)} ${esc(r.local)}</span></div>
-      <h2>${esc(r.name)}</h2>${r.kind === 'D' ? '<p class="desc">심리운동·감각운동·언어·미술 등 제공 영역은 기관마다 달라요. 전화로 확인해 주세요.</p>' : ''}
+      <h2>${esc(r.name)}</h2>${r.kind === 'D' ? (r.areaTxt
+        ? `<p class="desc"><b>제공 영역</b> ${r.areaTxt.split('·').map((a) => /심리운동|운동|감각|특수체육/.test(a) ? `<span class="badge area">${esc(a)}</span>` : esc(a)).join(' · ')}${r.visit ? ` <span class="muted">(${esc(r.visit)})</span>` : ''}<br><span class="muted">인천광역시 공개 자료 기준</span></p>`
+        : '<p class="desc">심리운동·감각운동·언어·미술 등 제공 영역은 기관마다 달라요. 전화로 확인해 주세요.</p>') : ''}
       <p class="addr">${esc(full)}</p>
       <div class="actions">
         ${call}
@@ -120,6 +123,7 @@
   function writeHash() {
     const p = new URLSearchParams();
     if (kindValue()) p.set('kind', kindValue());
+    if (el.psy.checked) p.set('psy', '1');
     if (el.city.value) p.set('city', el.city.value);
     if (el.local.value) p.set('local', el.local.value);
     if (el.sport.value) p.set('sport', el.sport.value);
@@ -134,6 +138,7 @@
     const p = new URLSearchParams(location.hash.slice(i + 1));
     const k = el.form.querySelector(`input[name="kind"][value="${p.get('kind') || ''}"]`);
     if (k) { k.checked = true; fillSports(); }
+    if (p.get('psy')) el.psy.checked = true;
     if (p.get('city')) { el.city.value = p.get('city'); fillLocals(); }
     if (p.get('local')) el.local.value = p.get('local');
     fillSports();
@@ -145,6 +150,7 @@
   el.city.addEventListener('change', () => { fillLocals(); fillSports(); search(); });
   el.local.addEventListener('change', () => { fillSports(); search(); });
   el.sport.addEventListener('change', search);
+  el.psy.addEventListener('change', search);
   el.q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(search, 200); });
   el.form.addEventListener('submit', (e) => { e.preventDefault(); search(); });
   el.form.querySelectorAll('input[name="kind"]').forEach((k) => k.addEventListener('change', () => { fillSports(); search(); }));
