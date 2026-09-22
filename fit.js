@@ -38,7 +38,8 @@
         dtypes = c.dtypes;
         const places = c.places.map((p) => ({ name: p[0], city: p[1], localCd: p[2], local: p[3], addr: p[4], daddr: p[5], tel: p[6] }));
         courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null }));
-        fac = f.rows.map((r) => ({ kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8] }));
+        fac = f.rows.map((r) => ({ kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8],
+          targets: r[9] || '*', ageRule: r[10] || '', ex: r[11] }));
         fac.forEach((r) => { (regions[r.city] = regions[r.city] || {})[r.localCd] = r.local; });
         const cnt = {};
         courses.forEach((r) => { cnt[r.sport] = (cnt[r.sport] || 0) + 1; });
@@ -127,14 +128,31 @@
     return map[inc];
   }
 
-  // 바우처 서비스명에 드러난 대상(성인·청소년·노인, 발달·뇌병변)과 맞지 않으면 추천에서 뺌
-  function voucherFits(name, age) {
-    if (/성인/.test(name) && age < 19) return false;
-    if (/청소년|아동/.test(name) && !/성인|노인/.test(name) && age >= 19) return false;
-    if (/^노인[^·]/.test(name) && age < 65) return false;
+  // 지역사회서비스(바우처)의 대상 장애유형·나이 조건이 나와 맞는지 (서비스명으로 미리 분류해 둔 값 사용)
+  function voucherFits(f, age) {
+    if (f.ageRule === 'adult' && age < 19) return false;
+    if (f.ageRule === 'child' && age >= 19) return false;
     const dname = a.dtype === '' ? '' : dtypes[+a.dtype];
-    if (/발달 및 뇌병변/.test(name) && dname && !['지적·자폐', '뇌병변'].includes(dname)) return false;
+    if (dname && f.targets !== '*' && !f.targets.split('|').includes(dname)) return false;
     return true;
+  }
+
+  // 운동 외 장애인 사회서비스(안마·보조기기 렌탈·심리지원 등): 우리 지역에 있는 서비스를 이름별로 묶음
+  function socialServices(age) {
+    const list = fac.filter((f) => f.kind === 'V' && f.ex === 0 && f.city === a.city && (!a.local || f.localCd === a.local) && voucherFits(f, age));
+    const by = {};
+    list.forEach((f) => { (by[f.sport] = by[f.sport] || []).push(f); });
+    return Object.entries(by).sort((x, y) => y[1].length - x[1].length);
+  }
+
+  function socialSection(age) {
+    const groups = socialServices(age);
+    if (!groups.length) return '';
+    return `<h4 class="subh">우리 동네 장애인 사회서비스 <b>${groups.length}</b>종 <span class="muted">(지역사회서비스투자사업 · 바우처)</span></h4>
+      <ul class="svc-list">${groups.map(([name, fs]) => `<li><details><summary><b>${esc(name)}</b> <span class="muted">제공기관 ${fs.length}곳</span></summary>
+        <ul>${fs.slice(0, 20).map((f) => `<li>${esc(f.name)} · ${esc(f.local)}${f.tel ? ` · <a href="tel:${esc(f.tel.replace(/-/g, ''))}">${esc(f.tel)}</a>` : ''}</li>`).join('')}${fs.length > 20 ? `<li class="muted">외 ${fs.length - 20}곳</li>` : ''}</ul>
+      </details></li>`).join('')}</ul>
+      <p class="hint">지역사회서비스투자사업은 소득 기준과 본인부담이 있고 시·군·구마다 달라요. 주민센터에서 바우처를 신청한 뒤 제공기관을 고르면 돼요.</p>`;
   }
 
   function inTime(start) {
@@ -207,6 +225,7 @@
       <h3>나에게 맞는 복지서비스 <b>${(local.length + central.length).toLocaleString()}</b>개 <span class="muted">(${esc(stage)} · 장애인 대상)</span></h3>
       <h4 class="subh">우리 지역 서비스 <b>${local.length}</b>개</h4>
       ${local.length ? list(local, 'wl-local') : '<p class="empty">우리 지역에 등록된 장애인 대상 지자체 서비스가 없어요.</p>'}
+      ${socialSection(age)}
       <h4 class="subh">전국 공통 서비스 <b>${central.length}</b>개</h4>
       ${central.length ? list(central, 'wl-central') : ''}
       <p class="hint">복지로(한국사회보장정보원) 공개 정보로 고른 <b>받을 수 있을 가능성이 있는</b> 서비스예요. 실제 자격은 소득·장애 정도 등 기준에 따라 기관이 정해요. 가까운 주민센터(행정복지센터)나 129 보건복지상담센터에 문의해 주세요.</p>
@@ -229,7 +248,7 @@
       </div>
       <div class="chips">${chips}</div>
       <p class="hint" id="fit-savemsg">${saved ? '이 기기(브라우저)에만 저장되어 있어요. 서버로 보내지 않아요.' : '저장하면 다음에 들어올 때 바로 맞춤 결과를 보여 드려요. 이 기기에만 저장돼요.'}</p>
-      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동 바우처</a></nav>
+      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동·재활 바우처</a></nav>
     </div>`;
   }
 
@@ -246,7 +265,7 @@
       .map((r) => ({ r, overlap: a.days.filter((d) => r.days[d] === '1').length }))
       .sort((x, y) => y.overlap - x.overlap || x.r.fee - y.r.fee);
 
-    const vouchers = fac.filter((f) => f.kind === 'V' && f.city === a.city && voucherFits(f.sport, age))
+    const vouchers = fac.filter((f) => f.kind === 'V' && f.ex === 1 && f.city === a.city && voucherFits(f, age))
       .sort((x, y) => (y.localCd === a.local) - (x.localCd === a.local));
     const nearV = a.local ? vouchers.filter((f) => f.localCd === a.local) : vouchers;
     const kCount = fac.filter((f) => f.kind === 'K' && f.city === a.city && (!a.local || f.localCd === a.local)).length;
@@ -273,7 +292,7 @@
       support = `<div class="fit-card warn">
         <p class="fit-tag">받을 수 있는 지원</p>
         <h3>강좌이용권은 만 5~69세가 대상이에요</h3>
-        <p>입력한 나이(${age}세)는 대상 밖이에요. 아래의 <b>장애인 운동 바우처 기관</b>이나 지역 장애인체육회·복지관 프로그램을 알아보세요.</p>
+        <p>입력한 나이(${age}세)는 대상 밖이에요. 아래의 <b>장애인 운동·재활 바우처 기관</b>이나 지역 장애인체육회·복지관 프로그램을 알아보세요.</p>
       </div>`;
     }
 
@@ -290,7 +309,7 @@
     }).join('');
 
     const vCards = (nearV.length ? nearV : vouchers).slice(0, 6).map((f) => `<li class="card">
-        <div class="badges"><span class="badge voucher">운동 바우처</span><span class="badge region">${esc(f.local)}</span></div>
+        <div class="badges"><span class="badge voucher">운동·재활 바우처</span><span class="badge region">${esc(f.local)}</span></div>
         <h2>${esc(f.name)}</h2>
         <p class="desc">${esc(f.sport)}</p>
         <p class="addr">${esc([f.addr, f.daddr].filter(Boolean).join(' '))}</p>
@@ -320,8 +339,8 @@
         <p class="more-link"><a href="#course?${q.toString()}">강좌 찾기에서 조건 바꿔 더 보기 →</a></p>
       </section>
       <section class="fit-sec" id="sec-voucher">
-        <h3>가까운 장애인 운동 바우처 기관 <b>${nearV.length}</b>곳${a.local && !nearV.length && vouchers.length ? ` <span class="muted">(${esc(a.city)} 전체 ${vouchers.length}곳 중 일부)</span>` : ''}</h3>
-        ${vouchers.length ? `<ul class="cards">${vCards}</ul>` : `<p class="empty">${esc(a.city)}에는 나이·장애유형에 맞는 장애인 운동 바우처 기관이 없어요. 지역마다 사업이 달라요.</p>`}
+        <h3>가까운 장애인 운동·재활 바우처 기관 <b>${nearV.length}</b>곳${a.local && !nearV.length && vouchers.length ? ` <span class="muted">(${esc(a.city)} 전체 ${vouchers.length}곳 중 일부)</span>` : ''}</h3>
+        ${vouchers.length ? `<ul class="cards">${vCards}</ul>` : `<p class="empty">${esc(a.city)}에는 나이·장애유형에 맞는 장애인 운동·재활 바우처 기관이 없어요. 지역마다 사업이 달라요.</p>`}
         <p class="hint">바우처 대상·본인부담은 시·군·구마다 달라요. 주민센터나 기관에 문의해 주세요.</p>
       </section>
       <section class="fit-sec">
