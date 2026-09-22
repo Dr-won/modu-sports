@@ -170,6 +170,7 @@ p.empty { padding: 24px; }
 .wcard details { font-size: .9rem; color: var(--ink-2); }
 .wcard summary { cursor: pointer; font-weight: 700; color: var(--brand); padding: 4px 0; }
 .wcard details p { margin: 6px 0; }
+.badge.dev { background: #f1ebfb; color: #5b3fa8; }
 .badge.new { background: #c2410c; color: #fff; }
 .news { display: flex; flex-direction: column; gap: 4px; background: #fff6ef; border: 1.5px solid #f2c4a6; border-radius: var(--radius); padding: 14px 18px; margin: 12px 0 4px; }
 .svc-list { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
