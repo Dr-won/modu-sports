@@ -11,7 +11,7 @@ import collections, csv, datetime, io, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from classify import auto_social, auto_welfare, classify, DTYPES  # noqa: E402
+from classify import auto_program, auto_social, auto_welfare, classify, DTYPES  # noqa: E402
 
 RAW = os.environ.get('RAW_DIR') or os.path.join(HERE, '..', '_raw')
 OUT = os.path.join(HERE, '..', 'data')
@@ -87,11 +87,13 @@ for r in load('장애인스포츠강좌이용권_등록시설.json'):
 n_k = len(rows)
 
 social_names = collections.Counter()
+PROGRAM_TYPES = ('장애아동가족지원', '발달장애인지원', '장애인활동지원')
 for r in load('ssis_providers.json'):
-    if r.get('serviceTypeName') != '지역사회서비스투자':
+    stype = r.get('serviceTypeName')
+    if stype != '지역사회서비스투자' and stype not in PROGRAM_TYPES:
         continue
     svc = clean(r.get('serviceName'))
-    cls = classify('사회서비스', svc, auto_social(svc))
+    cls = classify('사회서비스', svc, auto_social(svc) if stype == '지역사회서비스투자' else auto_program(svc))
     social_names[svc] += 1
     if not cls['include']:
         continue
@@ -108,8 +110,8 @@ for r in load('ssis_providers.json'):
     if key in keys:
         continue
     keys.add(key)
-    # 기관장명·이메일은 개인정보라 넣지 않음
-    rows.append(['V', clean(r.get('providerName')), svc, city, cd, local, addr,
+    # 기관장명·이메일은 개인정보라 넣지 않음. 발달재활(ex=2)은 따로 'D'
+    rows.append(['D' if cls['ex'] == 2 else 'V', clean(r.get('providerName')), svc, city, cd, local, addr,
                  clean(r.get('loadAddressDetail')) or clean(r.get('addressDetail')), tel(r.get('telNumber')),
                  cls['targets'], cls['age'], cls['ex'], first_seen('facility', key)])
 
@@ -223,7 +225,7 @@ for r in csv.DictReader(open(os.path.join(STATIC, 'usage_synthetic.csv'), encodi
 fac_sido, vou_sido, crs_sido = collections.Counter(), collections.Counter(), {s: collections.Counter() for s in SIDO_ORDER}
 local = {}
 for r in rows:
-    if r[0] == 'V' and not r[11]:  # '운동·재활 바우처'는 운동·재활 서비스만 셈
+    if r[0] == 'D' or (r[0] == 'V' and r[11] != 1):  # '운동·재활 바우처'는 운동·재활 서비스만 셈
         continue
     L = local.setdefault(r[4], {'sido': r[3], 'name': r[5], 'K': 0, 'V': 0, 'C': 0})
     L[r[0]] += 1
@@ -258,7 +260,8 @@ def old_count(name, pick):
 
 checks = [
     ('강좌이용권 시설', n_k, old_count('facilities.json', lambda d: sum(1 for r in d['rows'] if r[0] == 'K'))),
-    ('지역사회서비스 기관', len(rows) - n_k, old_count('facilities.json', lambda d: sum(1 for r in d['rows'] if r[0] == 'V'))),
+    ('장애인 사회서비스 기관', sum(1 for r in rows if r[0] == 'V'), old_count('facilities.json', lambda d: sum(1 for r in d['rows'] if r[0] == 'V'))),
+    ('발달재활 기관', sum(1 for r in rows if r[0] == 'D'), old_count('facilities.json', lambda d: sum(1 for r in d['rows'] if r[0] == 'D'))),
     ('강좌', len(courses), old_count('courses.json', lambda d: len(d['rows']))),
     ('복지서비스', len(wrows), old_count('welfare.json', lambda d: len(d['rows']))),
 ]
@@ -295,6 +298,6 @@ with open(os.path.join(REVIEW_OUT, '_자동분류_목록.csv'), 'w', encoding='u
         a = auto_social(n)
         w.writerow(['사회서비스', n, a['targets'], a['age'], a['ex'], social_names[n]])
 
-vr = rows[n_k:]
-print(f'완료 {TODAY}: 시설 K {n_k} / V {len(vr)} (운동·재활 {sum(r[11] for r in vr)}) · 강좌 {len(courses)} (위치 연결 {sum(1 for c in courses if c[8] >= 0)}) · 복지서비스 {len(wrows)}')
+vr = [r for r in rows if r[0] == 'V']
+print(f'완료 {TODAY}: 시설 K {n_k} / 사회서비스 V {len(vr)} (운동·재활 {sum(1 for r in vr if r[11] == 1)}) / 발달재활 D {sum(1 for r in rows if r[0] == "D")} · 강좌 {len(courses)} (위치 연결 {sum(1 for c in courses if c[8] >= 0)}) · 복지서비스 {len(wrows)}')
 print('새로 발견(오늘):', {k: sum(1 for v in d.values() if v == TODAY) for k, d in seen.items()})
