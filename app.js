@@ -43,18 +43,18 @@
   }
 
   const kindValue = () => (el.form.querySelector('input[name="kind"]:checked') || {}).value || '';
-  const KIND_LABEL = { K: '스포츠강좌이용권 종목', V: '장애인 운동·재활 바우처 서비스' };
+  const KIND_LABEL = { K: '스포츠강좌이용권 종목', V: '장애인 운동·재활 바우처 서비스', D: '발달재활서비스(장애아동)' };
 
   // 종목(강좌이용권)과 서비스명(바우처)을 구분별로 묶어 보여 줌. 고른 지역에 있는 것만, 그 지역 숫자로
   function fillSports() {
     const kind = kindValue(), keep = el.sport.value, city = el.city.value, local = el.local.value;
-    const groups = { K: {}, V: {} };
+    const groups = { K: {}, V: {}, D: {} };
     rows.forEach((r) => {
       if ((kind && r.kind !== kind) || (city && r.city !== city) || (local && r.localCd !== local)) return;
       groups[r.kind][r.sport] = (groups[r.kind][r.sport] || 0) + 1;
     });
     let html = opt('', '전체');
-    ['K', 'V'].forEach((k) => {
+    ['K', 'V', 'D'].forEach((k) => {
       const cnt = groups[k], names = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
       if (!names.length) return;
       html += `<optgroup label="${KIND_LABEL[k]}">` + names.map((s) => opt(k + '|' + s, `${s} (${cnt[s].toLocaleString()})`)).join('') + '</optgroup>';
@@ -78,10 +78,11 @@
 
   function render() {
     const place = [el.city.value, el.local.selectedOptions[0] && el.local.value ? el.local.selectedOptions[0].text : ''].filter(Boolean).join(' ');
-    const nK = hits.filter((r) => r.kind === 'K').length, nV = hits.length - nK;
+    const n = (k) => hits.filter((r) => r.kind === k).length;
     const parts = [];
-    if (nK) parts.push(`강좌이용권 시설 <b>${nK.toLocaleString()}</b>곳`);
-    if (nV) parts.push(`운동·재활 바우처 기관 <b>${nV.toLocaleString()}</b>곳`);
+    if (n('K')) parts.push(`강좌이용권 시설 <b>${n('K').toLocaleString()}</b>곳`);
+    if (n('V')) parts.push(`운동·재활 바우처 기관 <b>${n('V').toLocaleString()}</b>곳`);
+    if (n('D')) parts.push(`발달재활 기관 <b>${n('D').toLocaleString()}</b>곳`);
     el.count.innerHTML = `${place ? esc(place) + ' · ' : ''}${parts.join(', ') || '<b>0</b>곳'}`;
     if (!hits.length) {
       el.list.innerHTML = '<li class="empty">조건에 맞는 시설이 없습니다.<br>종목을 "전체"로 바꾸거나 옆 지역을 골라 보세요.</li>';
@@ -104,8 +105,9 @@
     return `<li class="card">
       <div class="badges">${r.kind === 'V'
         ? `<span class="badge voucher">운동·재활 바우처</span><span class="badge voucher">${esc(r.sport)}</span>`
+        : r.kind === 'D' ? '<span class="badge dev">발달재활서비스</span><span class="badge dev">장애아동</span>'
         : `<span class="badge">강좌이용권</span><span class="badge">${esc(r.sport)}</span>`}<span class="badge region">${esc(r.city)} ${esc(r.local)}</span></div>
-      <h2>${esc(r.name)}</h2>
+      <h2>${esc(r.name)}</h2>${r.kind === 'D' ? '<p class="desc">심리운동·감각운동·언어·미술 등 제공 영역은 기관마다 달라요. 전화로 확인해 주세요.</p>' : ''}
       <p class="addr">${esc(full)}</p>
       <div class="actions">
         ${call}
