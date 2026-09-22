@@ -44,11 +44,14 @@
   const kindValue = () => (el.form.querySelector('input[name="kind"]:checked') || {}).value || '';
   const KIND_LABEL = { K: '스포츠강좌이용권 종목', V: '장애인 운동 바우처 서비스' };
 
-  // 종목(강좌이용권)과 서비스명(바우처)을 구분별로 묶어 보여 줌
+  // 종목(강좌이용권)과 서비스명(바우처)을 구분별로 묶어 보여 줌. 고른 지역에 있는 것만, 그 지역 숫자로
   function fillSports() {
-    const kind = kindValue(), keep = el.sport.value;
+    const kind = kindValue(), keep = el.sport.value, city = el.city.value, local = el.local.value;
     const groups = { K: {}, V: {} };
-    rows.forEach((r) => { if (!kind || r.kind === kind) groups[r.kind][r.sport] = (groups[r.kind][r.sport] || 0) + 1; });
+    rows.forEach((r) => {
+      if ((kind && r.kind !== kind) || (city && r.city !== city) || (local && r.localCd !== local)) return;
+      groups[r.kind][r.sport] = (groups[r.kind][r.sport] || 0) + 1;
+    });
     let html = opt('', '전체');
     ['K', 'V'].forEach((k) => {
       const cnt = groups[k], names = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
@@ -130,13 +133,14 @@
     if (k) { k.checked = true; fillSports(); }
     if (p.get('city')) { el.city.value = p.get('city'); fillLocals(); }
     if (p.get('local')) el.local.value = p.get('local');
+    fillSports();
     if (p.get('sport')) el.sport.value = p.get('sport');
     if (p.get('q')) el.q.value = p.get('q');
   }
 
   let timer;
-  el.city.addEventListener('change', () => { fillLocals(); search(); });
-  el.local.addEventListener('change', search);
+  el.city.addEventListener('change', () => { fillLocals(); fillSports(); search(); });
+  el.local.addEventListener('change', () => { fillSports(); search(); });
   el.sport.addEventListener('change', search);
   el.q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(search, 200); });
   el.form.addEventListener('submit', (e) => { e.preventDefault(); search(); });
