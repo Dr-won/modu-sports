@@ -21,6 +21,7 @@
         </span>
       </a>
       <nav class="tabs" aria-label="주요 메뉴">
+        <a href="#fit" class="tab" data-view="fit">맞춤 찾기</a>
         <a href="#facility" class="tab" data-view="facility">시설 찾기</a>
         <a href="#course" class="tab" data-view="course">강좌 찾기</a>
         <a href="#gap" class="tab" data-view="gap">지역 공백 보기</a>
@@ -29,6 +30,25 @@
   </header>
 
   <main id="main" class="wrap">
+  <section id="view-fit" class="view" hidden>
+    <section class="intro">
+      <h1>몇 가지만 답하면<br>나에게 맞는 운동을 찾아 드려요</h1>
+      <p>입력한 내용은 <b>이 기기 안에서만 계산</b>하고 어디에도 저장하거나 보내지 않습니다.</p>
+    </section>
+
+    <div id="fit-wizard" class="wizard">
+      <div class="progress" aria-hidden="true"><span id="fit-bar"></span></div>
+      <p class="step-count" id="fit-count"></p>
+      <div id="fit-step" class="step" aria-live="polite"></div>
+      <div class="wizard-nav">
+        <button type="button" id="fit-prev" class="btn-ghost">이전</button>
+        <button type="button" id="fit-next" class="btn">다음</button>
+      </div>
+    </div>
+
+    <div id="fit-result" hidden></div>
+  </section>
+
   <section id="view-facility" class="view">
     <section class="intro">
       <h1>우리 동네에서<br>장애인이 운동할 수 있는 곳</h1>
@@ -190,6 +210,7 @@
   <script src="app.js"></script>
   <script src="course.js"></script>
   <script src="gap.js"></script>
+  <script src="fit.js"></script>
   <script src="router.js"></script>
 </body>
 </html>
