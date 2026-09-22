@@ -8,7 +8,9 @@
   const VOUCHER_MAX = 110000; // 2026년 장애인스포츠강좌이용권 월 지원 한도
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  let loaded = false, dtypes = [], courses = [], fac = [], regions = {}, sports = [], welfare = [];
+  let loaded = false, dtypes = [], courses = [], fac = [], regions = {}, sports = [], welfare = [], baseline = '';
+  let since = ''; // 이 날짜 뒤에 처음 발견된 항목을 '새로 생긴' 것으로 표시 (지난 방문일, 없으면 표시 안 함)
+  const isNew = (x) => since && x.first && x.first > since && x.first > baseline;
   let i = 0;
   const a = { who: '', age: '', dtype: '', degree: '', income: '', city: '', local: '', days: [], time: '', sport: '' };
 
@@ -34,18 +36,25 @@
     el.step.innerHTML = '<p class="hint">불러오는 중…</p>';
     Promise.all([fetch('data/courses.json').then((r) => r.json()), fetch('data/facilities.json').then((r) => r.json()), fetch('data/welfare.json').then((r) => r.json())])
       .then(([c, f, w]) => {
-        welfare = w.rows.map((r) => ({ level: r[0], name: r[1], sum: r[2], target: r[3], benefit: r[4], type: r[5], cycle: r[6], contact: r[7], link: r[8], life: r[9], who: r[10], city: r[11], sgg: r[12], apply: r[13] }));
+        welfare = w.rows.map((r) => ({ level: r[0], name: r[1], sum: r[2], target: r[3], benefit: r[4], type: r[5], cycle: r[6], contact: r[7], link: r[8], life: r[9], who: r[10], city: r[11], sgg: r[12], apply: r[13],
+          id: r[14], targets: r[15] || '*', ageRule: r[16] || '', degree: r[17] || '', low: r[18], first: r[19] || '' }));
+        baseline = w.baseline || '';
         dtypes = c.dtypes;
         const places = c.places.map((p) => ({ name: p[0], city: p[1], localCd: p[2], local: p[3], addr: p[4], daddr: p[5], tel: p[6] }));
-        courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null }));
+        courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null, first: r[9] || '' }));
         fac = f.rows.map((r) => ({ kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8],
-          targets: r[9] || '*', ageRule: r[10] || '', ex: r[11] }));
+          targets: r[9] || '*', ageRule: r[10] || '', ex: r[11], first: r[12] || '' }));
         fac.forEach((r) => { (regions[r.city] = regions[r.city] || {})[r.localCd] = r.local; });
         const cnt = {};
         courses.forEach((r) => { cnt[r.sport] = (cnt[r.sport] || 0) + 1; });
         sports = Object.keys(cnt).sort((x, y) => cnt[y] - cnt[x]);
         const saved = loadProfile();
-        if (saved) { Object.assign(a, saved); result(); } else draw();
+        if (saved) {
+          since = saved.lastVisit || '';
+          Object.assign(a, saved);
+          result();
+          touchVisit();
+        } else draw();
       })
       .catch(() => { el.step.innerHTML = '<p class="hint">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>'; });
   }
@@ -171,41 +180,52 @@
     const p = {};
     KEYS.forEach((k) => { p[k] = a[k]; });
     ['who', 'dtype', 'degree', 'income'].forEach((k) => { p[k + 'Set'] = true; });
+    p.lastVisit = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
     try { localStorage.setItem(STORE, JSON.stringify(p)); return true; } catch (e) { return false; }
   }
   function clearProfile() { try { localStorage.removeItem(STORE); } catch (e) { /* 저장소를 못 쓰는 브라우저 */ } }
+  // 저장된 나의 정보에 이번 방문 날짜를 남김 (다음 방문 때 그 뒤로 새로 생긴 서비스를 알려 주려고)
+  function touchVisit() {
+    try {
+      const p = JSON.parse(localStorage.getItem(STORE) || 'null');
+      if (!p) return;
+      p.lastVisit = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+      localStorage.setItem(STORE, JSON.stringify(p));
+    } catch (e) { /* 무시 */ }
+  }
 
   // ── 복지서비스 고르기 ────────────────────────
   function lifeStage(age) {
     return age <= 5 ? '영유아' : age <= 12 ? '아동' : age <= 18 ? '청소년' : age <= 34 ? '청년' : age <= 64 ? '중장년' : '노년';
   }
-  // 서비스명에 특정 장애유형이 드러나면 그 유형만 (예: 발달장애 → 지적·자폐)
-  const TYPE_WORDS = [[/발달장애|자폐|지적장애/, '지적·자폐'], [/시각/, '시각'], [/청각|농아|수어|난청|인공달팽이/, '청각·언어'], [/뇌병변/, '뇌병변'], [/지체/, '지체']];
+  // 대상 장애유형·나이·장애 정도는 매주 자동 갱신 때 분류해 둔 값(검수표 우선)을 씀
   function welfareFor(age) {
     const stage = lifeStage(age), dname = a.dtype === '' ? '' : dtypes[+a.dtype];
     const localName = a.local ? regions[a.city][a.local] : '';
     const ok = (w) => {
       if (w.life.length && !w.life.includes(stage)) return false;
-      if (/중증/.test(w.name) && a.degree === 'mild') return false;
-      if (/장애아|장애아동/.test(w.name) && age > 18) return false;
-      const types = TYPE_WORDS.filter(([re]) => re.test(w.name)).map(([, t]) => t);
-      if (dname && types.length && !types.includes(dname)) return false;
+      if (w.ageRule === 'child' && age > 18) return false;
+      if (w.ageRule === 'adult' && age < 19) return false;
+      if (w.degree === 'severe' && a.degree === 'mild') return false;
+      if (w.degree === 'mild' && a.degree === 'severe') return false;
+      if (dname && w.targets !== '*' && !w.targets.split('|').includes(dname)) return false;
       return true;
     };
-    const score = (w) => (/장애|발달|중증/.test(w.name) ? 3 : 0) + (w.who.length === 1 ? 2 : 0) +
+    const score = (w) => (isNew(w) ? 10 : 0) + (/장애|발달|중증/.test(w.name) ? 3 : 0) + (w.targets !== '*' ? 2 : 0) + (w.who.length === 1 ? 2 : 0) +
       (w.sgg && w.sgg === localName ? 2 : 0) - (isLow(w) && a.income === 'none' ? 4 : 0);
     const sort = (list) => list.sort((x, y) => score(y) - score(x));
-    const local = sort(welfare.filter((w) => w.level === 'L' && w.city === a.city && (!w.sgg || w.sgg === '-' || !localName || w.sgg === localName) && ok(w)));
+    const local = sort(welfare.filter((w) => w.level === 'L' && w.city === a.city && (!w.sgg || !localName || w.sgg === localName) && ok(w)));
     const central = sort(welfare.filter((w) => w.level === 'C' && ok(w)));
     return { local, central, stage, localName };
   }
 
-  function isLow(w) { return w.who.includes('저소득') || /저소득|수급자|차상위/.test(w.name); }
+  function isLow(w) { return !!w.low || w.who.includes('저소득'); }
+  const NEW_BADGE = '<span class="badge new">새로 생김</span>';
 
   function welfareCard(w) {
     const low = isLow(w);
     return `<li class="card wcard">
-      <div class="badges">${w.level === 'L' ? `<span class="badge region">${esc(w.sgg && w.sgg !== '-' ? w.sgg : w.city)}</span>` : '<span class="badge region">전국</span>'}${w.type ? `<span class="badge">${esc(w.type)}</span>` : ''}${low ? '<span class="badge voucher">저소득 조건</span>' : ''}</div>
+      <div class="badges">${isNew(w) ? NEW_BADGE : ''}${w.level === 'L' ?`<span class="badge region">${esc(w.sgg && w.sgg !== '-' ? w.sgg : w.city)}</span>` : '<span class="badge region">전국</span>'}${w.type ? `<span class="badge">${esc(w.type)}</span>` : ''}${low ? '<span class="badge voucher">저소득 조건</span>' : ''}</div>
       <h2>${esc(w.name)}</h2>
       ${w.sum ? `<p class="desc">${esc(w.sum)}</p>` : ''}
       ${w.target || w.benefit ? `<details><summary>누가, 무엇을 받나요?</summary>${w.target ? `<p><b>대상</b> ${esc(w.target)}</p>` : ''}${w.benefit ? `<p><b>내용</b> ${esc(w.benefit)}</p>` : ''}</details>` : ''}
@@ -263,10 +283,10 @@
       (!bit || (r.mask & bit)) && (!a.sport || r.sport === a.sport) && inTime(r.start) &&
       (!a.days.length || a.days.some((d) => r.days[d] === '1')))
       .map((r) => ({ r, overlap: a.days.filter((d) => r.days[d] === '1').length }))
-      .sort((x, y) => y.overlap - x.overlap || x.r.fee - y.r.fee);
+      .sort((x, y) => isNew(y.r) - isNew(x.r) || y.overlap - x.overlap || x.r.fee - y.r.fee);
 
     const vouchers = fac.filter((f) => f.kind === 'V' && f.ex === 1 && f.city === a.city && voucherFits(f, age))
-      .sort((x, y) => (y.localCd === a.local) - (x.localCd === a.local));
+      .sort((x, y) => isNew(y) - isNew(x) || (y.localCd === a.local) - (x.localCd === a.local));
     const nearV = a.local ? vouchers.filter((f) => f.localCd === a.local) : vouchers;
     const kCount = fac.filter((f) => f.kind === 'K' && f.city === a.city && (!a.local || f.localCd === a.local)).length;
 
@@ -299,7 +319,7 @@
     const courseCards = picked.slice(0, 12).map(({ r }) => {
       const p = r.place, mapQ = encodeURIComponent(p.addr || p.name);
       return `<li class="card">
-        <div class="badges"><span class="badge">${esc(r.sport)}</span>${r.fee <= VOUCHER_MAX ? '<span class="badge ok">이용권 한도 안</span>' : ''}</div>
+        <div class="badges">${isNew(r) ? NEW_BADGE : ''}<span class="badge">${esc(r.sport)}</span>${r.fee <= VOUCHER_MAX ? '<span class="badge ok">이용권 한도 안</span>' : ''}</div>
         <h2>${esc(r.name)}</h2>
         <div class="week" role="img" aria-label="운영 요일 ${DAYS.filter((_, n) => r.days[n] === '1').join('·')}">${DAYS.map((d, n) => `<span class="day${r.days[n] === '1' ? ' on' : ''}" aria-hidden="true">${d}</span>`).join('')}</div>
         <p class="meta"><span>${r.start ? esc(r.start) + '~' + esc(r.end) : '시간 정보 없음'}</span><span class="fee">${r.fee.toLocaleString()}원</span></p>
@@ -309,7 +329,7 @@
     }).join('');
 
     const vCards = (nearV.length ? nearV : vouchers).slice(0, 6).map((f) => `<li class="card">
-        <div class="badges"><span class="badge voucher">운동·재활 바우처</span><span class="badge region">${esc(f.local)}</span></div>
+        <div class="badges">${isNew(f) ? NEW_BADGE : ''}<span class="badge voucher">운동·재활 바우처</span><span class="badge region">${esc(f.local)}</span></div>
         <h2>${esc(f.name)}</h2>
         <p class="desc">${esc(f.sport)}</p>
         <p class="addr">${esc([f.addr, f.daddr].filter(Boolean).join(' '))}</p>
@@ -328,8 +348,18 @@
 
     const cond = [dname && `${dname} 장애`, a.days.length && DAYS.filter((_, n) => a.days.includes(n)).join('·'), a.time && { am: '오전', pm: '오후', ev: '저녁' }[a.time], a.sport].filter(Boolean).join(' · ');
 
+    // 지난 방문 이후 새로 생긴 나에게 맞는 항목
+    const wf = welfareFor(age);
+    const nW = wf.local.concat(wf.central).filter(isNew).length, nC = picked.filter(({ r }) => isNew(r)).length, nV = vouchers.filter(isNew).length;
+    const news = since && (nW + nC + nV) ? `<div class="news" role="status">
+        <b>🔔 지난 방문(${esc(since)}) 이후 새로 생긴 나에게 맞는 서비스</b>
+        <span>${[nW && `복지서비스 ${nW}개`, nC && `강좌 ${nC}개`, nV && `운동·재활 바우처 ${nV}곳`].filter(Boolean).join(' · ')}</span>
+        <span class="muted">"새로 생김" 표시를 찾아보세요.</span>
+      </div>` : '';
+
     el.result.innerHTML = `
       ${profileCard(!!loadProfile())}
+      ${news}
       ${welfareSection(age)}
       <section class="fit-sec" id="sec-sport">
       <h3>나에게 맞는 체육 지원</h3>
