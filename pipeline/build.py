@@ -11,7 +11,7 @@ import collections, csv, datetime, io, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from classify import auto_program, auto_social, auto_welfare, classify, DTYPES  # noqa: E402
+from classify import AREA_NAMES, DEV_AREA_MAP, areas_mask, auto_program, auto_social, auto_welfare, classify, DTYPES  # noqa: E402
 
 RAW = os.environ.get('RAW_DIR') or os.path.join(HERE, '..', '_raw')
 OUT = os.path.join(HERE, '..', 'data')
@@ -83,8 +83,33 @@ for r in load('장애인스포츠강좌이용권_등록시설.json'):
         continue
     keys.add(key)
     rows.append(['K', name, clean(r.get('main_event_nm')), city, cd, local, addr, clean(r.get('faci_daddr')),
-                 tel(r.get('res_telno')), '', '', 1, first_seen('facility', key)])
+                 tel(r.get('res_telno')), '', '', 1, first_seen('facility', key), '', 0, ''])
 n_k = len(rows)
+
+# 인천 발달재활 제공기관의 센터별 제공영역 (이번 주 받은 것, 없으면 저장본)
+def norm_name(s):
+    return re.sub(r'[\s()\[\]·.,-]|주식회사|\(주\)|사회적협동조합|협동조합', '', s or '')
+
+
+inc_path = os.path.join(RAW, 'incheon_dev.csv')
+inc_path = inc_path if os.path.exists(inc_path) else os.path.join(STATIC, 'incheon_dev.csv')
+dev_areas = collections.defaultdict(lambda: {'raw': [], 'visit': False})
+_b = open(inc_path, 'rb').read()
+for _enc in ('utf-8-sig', 'cp949'):
+    try:
+        _t = _b.decode(_enc)
+        break
+    except UnicodeDecodeError:
+        pass
+for r in csv.DictReader(io.StringIO(_t)):
+    k = norm_name(r.get('제공기관명'))
+    for a in re.split(r'[,/]', r.get('제공영역') or ''):
+        a = a.strip()
+        if a and a not in dev_areas[k]['raw']:
+            dev_areas[k]['raw'].append(a)
+    if '방문' in (r.get('제공 방식') or ''):
+        dev_areas[k]['visit'] = True
+dev_matched = 0
 
 social_names = collections.Counter()
 PROGRAM_TYPES = ('장애아동가족지원', '발달장애인지원', '장애인활동지원')
@@ -111,9 +136,18 @@ for r in load('ssis_providers.json'):
         continue
     keys.add(key)
     # 기관장명·이메일은 개인정보라 넣지 않음. 발달재활(ex=2)은 따로 'D'
-    rows.append(['D' if cls['ex'] == 2 else 'V', clean(r.get('providerName')), svc, city, cd, local, addr,
+    pname = clean(r.get('providerName'))
+    area_txt, amask, visit = '', areas_mask(svc), ''
+    if cls['ex'] == 2 and city == '인천':
+        info = dev_areas.get(norm_name(pname))
+        if info:
+            dev_matched += 1
+            area_txt = '·'.join(info['raw'])
+            amask |= sum(1 << AREA_NAMES.index(DEV_AREA_MAP[a]) for a in info['raw'] if a in DEV_AREA_MAP)
+            visit = '방문 가능' if info['visit'] else '기관 내'
+    rows.append(['D' if cls['ex'] == 2 else 'V', pname, svc, city, cd, local, addr,
                  clean(r.get('loadAddressDetail')) or clean(r.get('addressDetail')), tel(r.get('telNumber')),
-                 cls['targets'], cls['age'], cls['ex'], first_seen('facility', key)])
+                 cls['targets'], cls['age'], cls['ex'], first_seen('facility', key), area_txt, amask, visit])
 
 # ── 강좌 ─────────────────────────────────────────
 DTYPE = {'지체': '지체', '뇌병변': '뇌병변', '시각': '시각', '청각/언어': '청각·언어', '언어': '청각·언어',
@@ -159,7 +193,8 @@ for r in load('장애인스포츠강좌이용권_등록강좌.json'):
         pi = place_idx[b]
     courses.append([clean(r.get('course_nm')), clean(r.get('cntnt_fst')), sum(1 << DORDER.index(d) for d in types),
                     r.get('weekday') or '', r.get('start_time') or '', r.get('end_time') or '', int(r.get('settl_amt') or 0),
-                    short(r.get('course_seta_desc'), 140), pi, first_seen('course', key)])
+                    short(r.get('course_seta_desc'), 140), pi, first_seen('course', key),
+                    areas_mask(clean(r.get('course_nm')) + ' ' + clean(r.get('course_seta_desc')))])
 
 # ── 복지로 장애인 복지서비스 ───────────────────────
 W = load('welfare_disability.json')
@@ -277,10 +312,11 @@ def dump(name, obj):
 
 
 meta = {'updated': TODAY, 'baseline': BASELINE}
-dump('facilities.json', {**meta, 'fields': ['구분', '기관명', '종목/서비스', '시도', '시군구코드', '시군구', '주소', '상세주소', '전화',
-                                            '대상장애유형(*=전체)', '나이조건', '운동·재활(1/0)', '처음 발견일'], 'rows': rows})
-dump('courses.json', {**meta, 'dtypes': DORDER,
-                      'fields': ['강좌명', '종목', '장애유형비트', '요일(월~일)', '시작', '종료', '수강료', '설명', '장소번호', '처음 발견일'],
+dump('facilities.json', {**meta, 'areas': AREA_NAMES,
+                         'fields': ['구분', '기관명', '종목/서비스', '시도', '시군구코드', '시군구', '주소', '상세주소', '전화',
+                                    '대상장애유형(*=전체)', '나이조건', '운동·재활(1/0/2)', '처음 발견일', '제공영역(원문)', '프로그램영역비트', '제공방식'], 'rows': rows})
+dump('courses.json', {**meta, 'dtypes': DORDER, 'areas': AREA_NAMES,
+                      'fields': ['강좌명', '종목', '장애유형비트', '요일(월~일)', '시작', '종료', '수강료', '설명', '장소번호', '처음 발견일', '프로그램영역비트'],
                       'placeFields': ['시설명', '시도', '시군구코드', '시군구', '주소', '상세주소', '전화'], 'places': places, 'rows': courses})
 dump('welfare.json', {**meta, 'fields': ['구분(C중앙/L지자체)', '서비스명', '요약', '지원대상', '지원내용', '제공유형', '지원주기', '문의',
                                          '복지로링크', '생애주기', '가구상황', '시도', '시군구', '신청방법', '서비스ID', '대상장애유형',
@@ -300,4 +336,6 @@ with open(os.path.join(REVIEW_OUT, '_자동분류_목록.csv'), 'w', encoding='u
 
 vr = [r for r in rows if r[0] == 'V']
 print(f'완료 {TODAY}: 시설 K {n_k} / 사회서비스 V {len(vr)} (운동·재활 {sum(1 for r in vr if r[11] == 1)}) / 발달재활 D {sum(1 for r in rows if r[0] == "D")} · 강좌 {len(courses)} (위치 연결 {sum(1 for c in courses if c[8] >= 0)}) · 복지서비스 {len(wrows)}')
+print('프로그램 영역 강좌:', {a: sum(1 for c in courses if c[10] & (1 << i)) for i, a in enumerate(AREA_NAMES)},
+      '/ 인천 발달재활 영역 연결', dev_matched, '곳 (심리운동', sum(1 for r in rows if r[0] == 'D' and r[14] & 1), '곳)')
 print('새로 발견(오늘):', {k: sum(1 for v in d.values() if v == TODAY) for k, d in seen.items()})
