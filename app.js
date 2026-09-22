@@ -113,6 +113,8 @@
         : '<p class="desc">심리운동·감각운동·언어·미술 등 제공 영역은 기관마다 달라요. 전화로 확인해 주세요.</p>') : ''}
       <p class="addr">${esc(full)}</p>
       <div class="actions">
+        ${window.modu.ask.button({ kind: r.kind, name: r.name, tel: r.tel, sub: `${r.city} ${r.local}`, areaTxt: r.areaTxt,
+          service: r.kind === 'K' ? `${r.sport} 강좌` : r.kind === 'D' ? '발달재활서비스' : r.sport })}
         ${call}
         <a class="act" href="https://map.naver.com/p/search/${mapQ}" target="_blank" rel="noopener" aria-label="${esc(r.name)} 네이버 지도에서 보기 (새 창)">지도 보기</a>
       </div>
