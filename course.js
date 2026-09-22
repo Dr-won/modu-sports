@@ -133,6 +133,7 @@
       const p = r.place, mapQ = encodeURIComponent(p.addr || p.name);
       where = `<p class="place"><b>${esc(p.name)}</b> · ${esc(p.city)} ${esc(p.local)}<br>${esc([p.addr, p.daddr].filter(Boolean).join(' '))}</p>
         <div class="actions">
+          ${window.modu.ask.button({ kind: 'course', name: p.name, tel: p.tel, sub: r.name, service: `「${r.name}」 강좌` })}
           ${p.tel ? `<a class="act call" href="tel:${esc(p.tel.replace(/-/g, ''))}">☎ ${esc(p.tel)}</a>` : ''}
           <a class="act" href="https://map.naver.com/p/search/${mapQ}" target="_blank" rel="noopener" aria-label="${esc(p.name)} 네이버 지도에서 보기 (새 창)">지도 보기</a>
         </div>`;
