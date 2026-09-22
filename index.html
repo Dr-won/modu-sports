@@ -175,6 +175,8 @@
         <select id="gmetric">
           <option value="fac">스포츠강좌이용권 등록시설</option>
           <option value="crs">장애유형별 강좌 (위치 확인된 강좌)</option>
+          <option value="psy">심리운동 강좌 (위치 확인된 강좌)</option>
+          <option value="dev">발달재활서비스 기관</option>
           <option value="vou">장애인 운동·재활 바우처 기관</option>
           <option value="use">강좌이용권 이용 기록 (합성 데이터)</option>
         </select>
@@ -202,7 +204,15 @@
 
     <section class="chart-card" id="glocal" hidden>
       <h2 class="chart-title" id="glocal-title"></h2>
-      <p class="chart-note">시군구별 장애인 인구는 공개 데이터가 없어 개수로만 보여 드립니다. 0곳인 칸은 <span class="zero">없음</span>으로 표시했습니다.</p>
+      <ul class="col-help">
+        <li><b>강좌이용권 등록시설</b>: 장애인스포츠강좌이용권(월 11만 원)을 쓸 수 있는 체육시설 수 (체육공단)</li>
+        <li><b>강좌 수(위치 확인분)</b>: 그 시군구에서 열리는 이용권 강좌 수. 강좌 자료에는 주소가 없어 사업자번호로 위치를 찾은 강좌(전체의 약 67%)만 셉니다. 실제로는 더 있을 수 있어요.</li>
+        <li><b>심리운동 강좌</b>: 위 강좌 중 이름·설명에 "심리운동"이 들어간 강좌</li>
+        <li><b>발달재활 기관</b>: 발달재활서비스(만 18세 미만 장애아동 바우처) 제공기관 수 (한국사회보장정보원)</li>
+        <li><b>운동·재활 바우처</b>: 지역사회서비스투자사업 중 장애인 운동·재활 서비스 제공기관 수</li>
+        <li><b>이용 기록</b>: 체육공단 합성(가짜) 데이터라 참고용이에요</li>
+      </ul>
+      <p class="chart-note">시군구별 장애인 인구는 공개 데이터가 없어 개수로만 보여 드립니다. 0인 칸은 <span class="zero">없음</span>으로 표시했습니다.</p>
       <div class="table-wrap"><table class="gt" id="glocal-table"></table></div>
     </section>
 
