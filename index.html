@@ -34,6 +34,7 @@
     <section class="intro">
       <h1>나의 정보를 넣으면<br>맞춤 복지서비스와 운동을 찾아 드려요</h1>
       <p>장애인 복지서비스(복지로)와 체육 지원·강좌를 한 번에 봅니다. 입력한 내용은 <b>이 기기 안에서만 계산</b>하고 서버로 보내지 않아요.</p>
+      <a class="psy-cta" href="#course?area=0">🧠 심리운동 강좌 바로 찾기 →</a>
     </section>
 
     <div id="fit-wizard" class="wizard">
@@ -62,6 +63,11 @@
         <label><input type="radio" name="kind" value="K"> 스포츠강좌이용권 시설</label>
         <label><input type="radio" name="kind" value="V"> 장애인 운동·재활 바우처 기관</label>
         <label><input type="radio" name="kind" value="D"> 발달재활서비스 기관(장애아동)</label>
+      </fieldset>
+      <fieldset class="kinds areas">
+        <legend>특수체육 프로그램</legend>
+        <label class="star"><input type="checkbox" id="psyonly"> 심리운동 하는 곳만</label>
+        <span class="hint">발달재활 영역은 공개 자료가 있는 인천만, 바우처는 사업명 기준이에요. 심리운동 <b>강좌</b>는 [강좌 찾기]에서 더 많이 찾을 수 있어요.</span>
       </fieldset>
       <div class="field">
         <label for="city">시·도</label>
@@ -93,11 +99,15 @@
 
   <section id="view-course" class="view" hidden>
     <section class="intro">
-      <h1>장애유형에 맞는<br>스포츠강좌 찾기</h1>
+      <h1>장애유형에 맞는<br>스포츠강좌·특수체육 찾기</h1>
       <p>장애인스포츠강좌이용권으로 들을 수 있는 강좌를 <b>장애유형 · 종목 · 요일 · 시간 · 수강료</b>로 찾습니다.</p>
     </section>
 
     <form id="cfilters" class="filters" role="search" aria-label="강좌 검색 조건">
+      <fieldset class="kinds areas" id="carea">
+        <legend>특수체육 프로그램 영역 <span class="muted">(강좌 이름·설명에서 찾았어요)</span></legend>
+        <label><input type="radio" name="area" value="" checked> 전체</label>
+      </fieldset>
       <fieldset class="kinds" id="cdtype">
         <legend>누가 들을 강좌인가요? (장애유형)</legend>
         <label><input type="radio" name="dtype" value="" checked> 전체</label>
