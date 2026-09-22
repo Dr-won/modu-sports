@@ -170,6 +170,14 @@ p.empty { padding: 24px; }
 .wcard details { font-size: .9rem; color: var(--ink-2); }
 .wcard summary { cursor: pointer; font-weight: 700; color: var(--brand); padding: 4px 0; }
 .wcard details p { margin: 6px 0; }
+.subq { margin: 16px 0 0; font-weight: 800; font-size: .92rem; color: var(--ink-2); }
+.choice.area-pick { border-color: #e2b33c; }
+.choice.area-pick.on { background: #fff1c2; color: #7a4b00; border-color: #b77f00; }
+.fit-sec.psy { background: #fffaf0; border: 1.5px solid #f0d58a; border-radius: var(--radius); padding: 18px; }
+.badge.area { background: #fff1c2; color: #7a4b00; }
+.kinds.areas label.star { border-color: #d49a00; }
+.kinds.areas label:has(input:checked) { border-color: #b77f00; background: #fff1c2; color: #7a4b00; }
+.psy-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 10px 18px; border-radius: 999px; background: #fff1c2; color: #7a4b00; font-weight: 800; text-decoration: none; border: 1.5px solid #e2b33c; }
 .badge.dev { background: #f1ebfb; color: #5b3fa8; }
 .badge.new { background: #c2410c; color: #fff; }
 .news { display: flex; flex-direction: column; gap: 4px; background: #fff6ef; border: 1.5px solid #f2c4a6; border-radius: var(--radius); padding: 14px 18px; margin: 12px 0 4px; }
