@@ -10,12 +10,16 @@
     fac: { label: '스포츠강좌이용권 등록시설', unit: '곳' },
     crs: { label: '강좌', unit: '개' },
     vou: { label: '장애인 운동·재활 바우처 기관', unit: '곳' },
+    dev: { label: '발달재활서비스 기관', unit: '곳' },
+    psy: { label: '심리운동 강좌', unit: '개' },
     use: { label: '강좌이용권 이용 기록(합성)', unit: '건' },
   };
   const NOTES = {
     fac: '등록시설: 체육공단 장애인스포츠강좌이용권 등록시설 정보. 등록장애인 수: 보건복지부 2024년.',
     crs: '강좌: 사업자번호로 시설 위치가 확인된 강좌만 셉니다(전체의 약 67%). 장애유형을 고르면 그 유형 등록장애인 수로 나눕니다.',
     vou: '운동·재활 바우처 기관: 한국사회보장정보원 사회서비스 제공기관 중 장애인 대상 운동·재활 서비스(뇌졸중·뇌혈관질환자 재활 포함). 지역사회서비스투자사업은 시도마다 사업이 달라 0곳인 시도가 많습니다.',
+    dev: '발달재활서비스 기관: 한국사회보장정보원 사회서비스 제공기관 중 발달재활(만 18세 미만 장애아동 바우처). 1만 명당 값은 전체 등록장애인 기준이에요(시도별 장애아동 수는 공개 자료에 없음).',
+    psy: '심리운동 강좌: 체육공단 강좌 중 이름·설명에 "심리운동"이 들어간 강좌 가운데 위치가 확인된 것(체육공단 종목 분류에는 심리운동이 없어 "기타종목"으로 등록되어 있음).',
     use: '이용 기록: 체육공단이 원본의 통계적 특성을 흉내 내어 만든 합성 데이터입니다. 실제 이용 실적이 아니므로 경향 참고용으로만 보세요.',
   };
 
@@ -39,7 +43,7 @@
     const m = el.metric.value, per = el.base.value === 'per';
     const g = m === 'crs' ? el.group.value : '전체';
     return data.sido.map((s) => {
-      const count = m === 'fac' ? s.fac : m === 'vou' ? s.vou : m === 'use' ? s.use : (s.crs[g] || 0);
+      const count = m === 'crs' ? (s.crs[g] || 0) : (s[m] || 0);
       const pop = s.dis[g] || 0;
       return { name: s.name, count, pop, v: per ? (pop ? count / pop * 1e4 : 0) : count };
     });
@@ -102,8 +106,9 @@
     const list = data.local.filter((l) => l[0] === sido);
     el.localTitle.textContent = `${sido} 시군구별 현황 (${list.length}곳)`;
     const cell = (v) => v ? v.toLocaleString() : '<span class="zero">없음</span>';
-    el.localTable.innerHTML = '<thead><tr><th scope="col">시군구</th><th scope="col">강좌이용권 시설</th><th scope="col">위치 확인 강좌</th><th scope="col">운동·재활 바우처</th><th scope="col">이용 기록(합성)</th></tr></thead><tbody>' +
-      list.sort((a, b) => a[3] - b[3]).map((l) => `<tr><th scope="row">${esc(l[2])}</th><td>${cell(l[3])}</td><td>${cell(l[5])}</td><td>${cell(l[4])}</td><td>${cell(l[6])}</td></tr>`).join('') +
+    el.localTable.innerHTML = '<thead><tr><th scope="col">시군구</th><th scope="col">강좌이용권<br>등록시설(곳)</th><th scope="col">강좌 수<br>(위치 확인분)</th>' +
+      '<th scope="col">심리운동<br>강좌(개)</th><th scope="col">발달재활<br>기관(곳)</th><th scope="col">운동·재활<br>바우처(곳)</th><th scope="col">이용 기록<br>(합성·참고)</th></tr></thead><tbody>' +
+      list.sort((a, b) => a[3] - b[3]).map((l) => `<tr><th scope="row">${esc(l[2])}</th><td>${cell(l[3])}</td><td>${cell(l[5])}</td><td>${cell(l[8] || 0)}</td><td>${cell(l[7] || 0)}</td><td>${cell(l[4])}</td><td>${cell(l[6])}</td></tr>`).join('') +
       '</tbody>';
     el.local.hidden = false;
     render();
