@@ -1,0 +1,49 @@
+# 매주 월요일 새벽 3시(한국시간)에 공공데이터를 새로 받아 사이트를 갱신한다.
+# 실패하면 GitHub 가 저장소 주인에게 메일로 알린다. 데이터가 크게 줄면 build.py 가 멈춰서 사이트는 그대로 남는다.
+name: 매주 데이터 갱신
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'   # UTC 일요일 18:00 = 한국 월요일 03:00
+  workflow_dispatch: {}    # Actions 화면에서 [Run workflow] 로 바로 돌릴 수도 있음
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 공공데이터 받기
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+          RAW_DIR: ${{ runner.temp }}/raw
+        run: python pipeline/fetch.py
+
+      - name: 사이트 데이터 만들기
+        env:
+          RAW_DIR: ${{ runner.temp }}/raw
+        run: python pipeline/build.py
+
+      - name: 바뀐 것만 올리기
+        run: |
+          git config user.name "modu-sports-bot"
+          git config user.email "modu-sports-bot@users.noreply.github.com"
+          git add data pipeline/cache pipeline/review
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+          else
+            git commit -m "매주 데이터 갱신 $(TZ=Asia/Seoul date +%F)"
+            git push
+          fi
