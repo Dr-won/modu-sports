@@ -156,6 +156,20 @@ select:disabled { background: #eef0f2; color: #8a949e; }
 .more-link a { color: var(--brand); }
 .badge.ok { background: #e7f5e7; color: #1f6b1f; }
 p.empty { padding: 24px; }
+.profile { background: var(--card); border: 1.5px solid #9fcfc4; border-radius: var(--radius); padding: 18px 20px; margin: 28px 0 8px; }
+.profile-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.profile-btns { display: flex; gap: 8px; }
+.btn.sm, .btn-ghost.sm { min-height: 40px; padding: 0 14px; font-size: .9rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.chip { background: var(--brand-soft); color: var(--brand); font-weight: 700; padding: 6px 12px; border-radius: 999px; font-size: .95rem; }
+.profile .hint { margin: 8px 0 0; }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.jump a { text-decoration: none; font-weight: 700; font-size: .9rem; padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--line); }
+.subh { font-size: 1rem; margin: 18px 0 10px; color: var(--ink-2); }
+.subh b { color: var(--brand); }
+.wcard details { font-size: .9rem; color: var(--ink-2); }
+.wcard summary { cursor: pointer; font-weight: 700; color: var(--brand); padding: 4px 0; }
+.wcard details p { margin: 6px 0; }
 
 /* 지역 공백 보기 */
 .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
