@@ -12,7 +12,8 @@
   let since = ''; // 이 날짜 뒤에 처음 발견된 항목을 '새로 생긴' 것으로 표시 (지난 방문일, 없으면 표시 안 함)
   const isNew = (x) => since && x.first && x.first > since && x.first > baseline;
   let i = 0;
-  const a = { who: '', age: '', dtype: '', degree: '', income: '', city: '', local: '', days: [], time: '', sport: '' };
+  const a = { who: '', age: '', dtype: '', degree: '', income: '', city: '', local: '', days: [], time: '', sport: '', area: '' };
+  let areaNames = [];
 
   const STEPS = [
     { key: 'who', q: () => '누구의 정보를 넣을까요?', type: 'choice', options: () => [['self', '나(본인)'], ['family', '자녀·가족']] },
@@ -27,7 +28,7 @@
       note: '강좌이용권 우선순위와 복지서비스 안내에만 써요.' },
     { key: 'region', q: () => '어디에 사세요?', type: 'region' },
     { key: 'days', q: () => '운동할 수 있는 요일과 시간대는요?', type: 'days', note: '고르지 않으면 모든 요일·시간을 보여 드려요.' },
-    { key: 'sport', q: () => '관심 있는 종목이 있나요?', type: 'sport' },
+    { key: 'sport', q: () => '관심 있는 운동이 있나요?', type: 'sport', note: '특수체육 프로그램(심리운동 등)이나 일반 종목 중 하나를 골라 주세요.' },
   ];
 
   function activate() {
@@ -41,9 +42,10 @@
         baseline = w.baseline || '';
         dtypes = c.dtypes;
         const places = c.places.map((p) => ({ name: p[0], city: p[1], localCd: p[2], local: p[3], addr: p[4], daddr: p[5], tel: p[6] }));
-        courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null, first: r[9] || '' }));
+        areaNames = c.areas || [];
+        courses = c.rows.map((r) => ({ name: r[0], sport: r[1], mask: r[2], days: r[3], start: r[4], end: r[5], fee: r[6], desc: r[7], place: r[8] >= 0 ? places[r[8]] : null, first: r[9] || '', areas: r[10] || 0 }));
         fac = f.rows.map((r) => ({ kind: r[0], name: r[1], sport: r[2], city: r[3], localCd: r[4], local: r[5], addr: r[6], daddr: r[7], tel: r[8],
-          targets: r[9] || '*', ageRule: r[10] || '', ex: r[11], first: r[12] || '' }));
+          targets: r[9] || '*', ageRule: r[10] || '', ex: r[11], first: r[12] || '', areaTxt: r[13] || '', areas: r[14] || 0, visit: r[15] || '' }));
         fac.forEach((r) => { (regions[r.city] = regions[r.city] || {})[r.localCd] = r.local; });
         const cnt = {};
         courses.forEach((r) => { cnt[r.sport] = (cnt[r.sport] || 0) + 1; });
@@ -83,7 +85,11 @@
       body = `<div class="choices days-pick">${DAYS.map((d, n) => `<button type="button" class="choice sm${a.days.includes(n) ? ' on' : ''}" aria-pressed="${a.days.includes(n)}" data-day="${n}">${d}</button>`).join('')}</div>
         <div class="choices">${[['', '시간 상관없음'], ['am', '오전'], ['pm', '오후'], ['ev', '저녁']].map(([v, t]) => `<button type="button" class="choice sm${a.time === v ? ' on' : ''}" aria-pressed="${a.time === v}" data-time="${v}">${t}</button>`).join('')}</div>`;
     } else if (s.type === 'sport') {
-      body = `<div class="choices">${[''].concat(sports.slice(0, 15)).map((sp) => `<button type="button" class="choice sm${a.sport === sp ? ' on' : ''}" aria-pressed="${a.sport === sp}" data-sport="${esc(sp)}">${sp ? esc(sp) : '상관없음'}</button>`).join('')}</div>`;
+      const none = !a.sport && a.area === '';
+      body = `<p class="subq">특수체육 프로그램</p>
+        <div class="choices">${areaNames.map((n, k) => `<button type="button" class="choice sm area-pick${a.area === String(k) ? ' on' : ''}" aria-pressed="${a.area === String(k)}" data-area="${k}">${esc(n)}</button>`).join('')}</div>
+        <p class="subq">일반 종목</p>
+        <div class="choices">${[''].concat(sports.filter((sp) => sp !== '기타종목').slice(0, 14)).map((sp) => `<button type="button" class="choice sm${sp ? (a.sport === sp ? ' on' : '') : (none ? ' on' : '')}" aria-pressed="${sp ? a.sport === sp : none}" data-sport="${esc(sp)}">${sp ? esc(sp) : '상관없음'}</button>`).join('')}</div>`;
     }
     el.step.innerHTML = `<h2 class="q">${esc(s.q())}</h2>${s.note ? `<p class="hint">${esc(s.note)}</p>` : ''}${body}<p class="err" id="fit-err" role="alert"></p>`;
     // 사용자가 넘어온 뒤에만 첫 입력으로 초점 이동 (처음 열 때 골라진 것처럼 보이지 않게)
@@ -100,7 +106,8 @@
     if (b.dataset.v !== undefined) { a[s.key] = b.dataset.v; a[s.key + 'Set'] = true; go(1); return; }
     if (b.dataset.day !== undefined) { const d = +b.dataset.day; a.days = a.days.includes(d) ? a.days.filter((x) => x !== d) : a.days.concat(d); draw(); return; }
     if (b.dataset.time !== undefined) { a.time = b.dataset.time; draw(); return; }
-    if (b.dataset.sport !== undefined) { a.sport = b.dataset.sport; draw(); }
+    if (b.dataset.sport !== undefined) { a.sport = b.dataset.sport; a.area = ''; draw(); }
+    if (b.dataset.area !== undefined) { a.area = b.dataset.area; a.sport = ''; draw(); }
   });
   el.step.addEventListener('change', (e) => {
     if (e.target.id === 'fit-city') { a.city = e.target.value; a.local = ''; draw(); }
@@ -172,7 +179,7 @@
   }
 
   // ── 나의 정보 저장 (이 브라우저에만) ───────────
-  const KEYS = ['who', 'age', 'dtype', 'degree', 'income', 'city', 'local', 'days', 'time', 'sport'];
+  const KEYS = ['who', 'age', 'dtype', 'degree', 'income', 'city', 'local', 'days', 'time', 'sport', 'area'];
   function loadProfile() {
     try { const p = JSON.parse(localStorage.getItem(STORE) || 'null'); return p && p.city ? p : null; } catch (e) { return null; }
   }
@@ -268,7 +275,7 @@
       </div>
       <div class="chips">${chips}</div>
       <p class="hint" id="fit-savemsg">${saved ? '이 기기(브라우저)에만 저장되어 있어요. 서버로 보내지 않아요.' : '저장하면 다음에 들어올 때 바로 맞춤 결과를 보여 드려요. 이 기기에만 저장돼요.'}</p>
-      <nav class="jump" aria-label="바로가기"><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동·재활 바우처</a>${+a.age < 18 ? '<a href="#sec-dev" data-jump>발달재활</a>' : ''}</nav>
+      <nav class="jump" aria-label="바로가기"><a href="#sec-psy" data-jump>🧠 심리운동</a><a href="#sec-welfare" data-jump>복지서비스</a><a href="#sec-sport" data-jump>체육 지원·강좌</a><a href="#sec-voucher" data-jump>운동·재활 바우처</a>${+a.age < 18 ? '<a href="#sec-dev" data-jump>발달재활</a>' : ''}</nav>
     </div>`;
   }
 
@@ -280,7 +287,7 @@
 
     // 강좌: 장애유형·지역·요일·시간·종목이 맞는 것. 같은 시군구 → 요일 많이 겹침 → 수강료 순
     const picked = courses.filter((r) => r.place && r.place.city === a.city && (!a.local || r.place.localCd === a.local) &&
-      (!bit || (r.mask & bit)) && (!a.sport || r.sport === a.sport) && inTime(r.start) &&
+      (!bit || (r.mask & bit)) && (!a.sport || r.sport === a.sport) && (a.area === '' || (r.areas & (1 << +a.area))) && inTime(r.start) &&
       (!a.days.length || a.days.some((d) => r.days[d] === '1')))
       .map((r) => ({ r, overlap: a.days.filter((d) => r.days[d] === '1').length }))
       .sort((x, y) => isNew(y.r) - isNew(x.r) || y.overlap - x.overlap || x.r.fee - y.r.fee);
@@ -359,12 +366,45 @@
     if (a.days.length) q.set('days', a.days.slice().sort().join(''));
     if (a.time) q.set('time', a.time);
     if (a.sport) q.set('sport', a.sport);
+    if (a.area !== '') q.set('area', a.area);
     q.set('city', a.city);
     if (a.local) q.set('local', a.local);
     const fq = new URLSearchParams({ city: a.city });
     if (a.local) fq.set('local', a.local);
 
-    const cond = [dname && `${dname} 장애`, a.days.length && DAYS.filter((_, n) => a.days.includes(n)).join('·'), a.time && { am: '오전', pm: '오후', ev: '저녁' }[a.time], a.sport].filter(Boolean).join(' · ');
+    const cond = [dname && `${dname} 장애`, a.days.length && DAYS.filter((_, n) => a.days.includes(n)).join('·'), a.time && { am: '오전', pm: '오후', ev: '저녁' }[a.time], a.sport, a.area !== '' && areaNames[+a.area]].filter(Boolean).join(' · ');
+
+    // 심리운동 모아보기: 강좌이용권 강좌 + 운동·재활 바우처 + 발달재활 기관(인천 공개 영역) 중 '심리운동'
+    const PSY = 1; // 영역 비트 0 = 심리운동
+    const inArea = (p) => p && p.city === a.city && (!a.local || p.localCd === a.local);
+    const psyCourses = courses.filter((r) => (r.areas & PSY) && inArea(r.place) && (!bit || (r.mask & bit)));
+    const psyCity = courses.filter((r) => (r.areas & PSY) && r.place && r.place.city === a.city && (!bit || (r.mask & bit)));
+    const psyFac = fac.filter((f) => (f.areas & PSY) && f.kind !== 'K' && f.city === a.city && (f.kind === 'D' ? age < 18 : voucherFits(f, age)));
+    const psyShow = psyCourses.length ? psyCourses : psyCity;
+    const psyCard = (r) => `<li class="card">
+        <div class="badges"><span class="badge area">심리운동</span>${areaNames.filter((n, k) => k && (r.areas & (1 << k))).map((n) => `<span class="badge area">${esc(n)}</span>`).join('')}</div>
+        <h2>${esc(r.name)}</h2>
+        <div class="week" aria-hidden="true">${DAYS.map((d, n) => `<span class="day${r.days[n] === '1' ? ' on' : ''}">${d}</span>`).join('')}</div>
+        <p class="meta"><span>${r.start ? esc(r.start) + '~' + esc(r.end) : ''}</span><span class="fee">${r.fee.toLocaleString()}원</span></p>
+        <p class="place"><b>${esc(r.place.name)}</b> · ${esc(r.place.local)}</p>
+        <div class="actions">${r.place.tel ? `<a class="act call" href="tel:${esc(r.place.tel.replace(/-/g, ''))}">☎ ${esc(r.place.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(r.place.addr || r.place.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+      </li>`;
+    const psyFacCard = (f) => `<li class="card">
+        <div class="badges"><span class="badge area">심리운동</span><span class="badge ${f.kind === 'D' ? 'dev">발달재활' : 'voucher">운동·재활 바우처'}</span><span class="badge region">${esc(f.local)}</span></div>
+        <h2>${esc(f.name)}</h2>
+        <p class="desc">${esc(f.kind === 'D' ? '제공 영역: ' + f.areaTxt : f.sport)}</p>
+        <div class="actions">${f.tel ? `<a class="act call" href="tel:${esc(f.tel.replace(/-/g, ''))}">☎ ${esc(f.tel)}</a>` : ''}<a class="act" href="https://map.naver.com/p/search/${encodeURIComponent(f.addr || f.name)}" target="_blank" rel="noopener">지도 보기</a></div>
+      </li>`;
+    const pq = new URLSearchParams({ area: '0', city: a.city });
+    if (a.local) pq.set('local', a.local);
+    if (a.dtype !== '') pq.set('dtype', a.dtype);
+    const psySection = `<section class="fit-sec psy" id="sec-psy">
+        <h3>🧠 심리운동 모아보기 <span class="muted">(${esc(place)}${dname ? ' · ' + esc(dname) : ''})</span></h3>
+        <p class="hint">강좌이용권 강좌 <b>${psyCourses.length}</b>개${a.local ? ` (${esc(a.city)} 전체 ${psyCity.length}개)` : ''} · 운동·재활 바우처·발달재활 기관 <b>${psyFac.length}</b>곳</p>
+        ${psyShow.length || psyFac.length ? `<ul class="cards">${psyFac.slice(0, 3).map(psyFacCard).join('')}${psyShow.slice(0, 6 - Math.min(3, psyFac.length)).map(psyCard).join('')}</ul>`
+          : '<p class="empty">우리 지역에 공개된 심리운동 정보가 아직 없어요. 발달재활센터는 심리운동을 하는 곳도 많으니 아래 목록에서 전화로 물어보세요.</p>'}
+        <p class="more-link"><a href="#course?${pq.toString()}">심리운동 강좌 모두 보기 →</a></p>
+      </section>`;
 
     // 지난 방문 이후 새로 생긴 나에게 맞는 항목
     const wf = welfareFor(age);
@@ -378,6 +418,7 @@
     el.result.innerHTML = `
       ${profileCard(!!loadProfile())}
       ${news}
+      ${psySection}
       ${welfareSection(age)}
       <section class="fit-sec" id="sec-sport">
       <h3>나에게 맞는 체육 지원</h3>
