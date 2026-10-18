@@ -2346,8 +2346,8 @@
 }
 },
 "WLF00004481": {
-"_stamp": "20260903",
-"_fetched": 1790072166,
+"_stamp": "20261016",
+"_fetched": 1792355625,
 "detail": {
 "resultCode": "0",
 "resultMessage": "SUCCESS",
@@ -2367,8 +2367,8 @@
 "slctCritCn": "연령 : 만 50~64세 성인「장애인복지법」에 따른 장애의 정도가 심한 장애인「국민기초생활보장법」에 따른 수급자",
 "alwServCn": "인플루엔자 예방접종 지원사업· 계절인플루엔자(독감) 예방접종 1회 무료 지원· 지정의료기관에서 무료 접종 가능(기관은 보건소/보건지소에 전화해서 확인)",
 "aplyMtdCn": "",
-"inqNum": "8672",
-"lastModYmd": "20260903"
+"inqNum": "11490",
+"lastModYmd": "20261016"
 }
 },
 "WLF00002838": {
@@ -20461,8 +20461,8 @@
 }
 },
 "WLF00004241": {
-"_stamp": "20250614",
-"_fetched": 1790072166,
+"_stamp": "20261014",
+"_fetched": 1792355626,
 "detail": {
 "resultCode": "0",
 "resultMessage": "SUCCESS",
@@ -20482,8 +20482,8 @@
 "slctCritCn": "타인의 도움없이 자립생활이 불가능한 장애인, 위급상황시 타인의 도움을 요청할수 없는 장애인",
 "alwServCn": "국비지원을 모두 사용한 자에게 시간 추가 지원",
 "aplyMtdCn": "- 바우처 결제를 통한 지급- 본인 및 대리인이 동 행정복지센터에 신청",
-"inqNum": "2655",
-"lastModYmd": "20250614"
+"inqNum": "2933",
+"lastModYmd": "20261014"
 }
 },
 "WLF00001246": {
@@ -20514,8 +20514,8 @@
 }
 },
 "WLF00000882": {
-"_stamp": "20250614",
-"_fetched": 1790072166,
+"_stamp": "20261014",
+"_fetched": 1792355627,
 "detail": {
 "resultCode": "0",
 "resultMessage": "SUCCESS",
@@ -20533,8 +20533,8 @@
 "slctCritCn": "수급자 및 차상위계층 연 30만원, 건강보험가입자 연 5만원까지 수리비용 지원",
 "alwServCn": "휠체어 등 순회 방문 수리 서비스, 사용법 교육, 상담 등",
 "aplyMtdCn": "",
-"inqNum": "2518",
-"lastModYmd": "20250614"
+"inqNum": "2765",
+"lastModYmd": "20261014"
 }
 },
 "WLF00003112": {
@@ -21565,6 +21565,33 @@
 "aplyMtdCn": "거주지 행정복지센터 또는 관할 건강보험공단",
 "inqNum": "467",
 "lastModYmd": "20261002"
+}
+},
+"WLF00006795": {
+"_stamp": "20261016",
+"_fetched": 1792355624,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006795",
+"servNm": "서울형 장애인 개인예산제 시범사업",
+"enfcBgngYmd": "20240603",
+"enfcEndYmd": "20261231",
+"bizChrDeptNm": "서울특별시 복지실 복지기획관 장애인복지과",
+"ctpvNm": "서울특별시",
+"servDgst": "장애인 당사자의 자기결정권 및 서비스 선택권 보장 강화",
+"lifeNmArray": "청년, 중장년, 노년",
+"trgterIndvdlNmArray": "장애인",
+"intrsThemaNmArray": "서민금융",
+"sprtCycNm": "월",
+"srvPvsnNm": "현금지급",
+"aplyMtdNm": "방문, E-mail",
+"sprtTrgtCn": "서울시 거주 만18세 이상 장애 정도가 심한 장애인",
+"slctCritCn": "개인예산계획서 -장애와의 연관성, 삶의 계획 목표와의 연관성, 삶의 변화가능성, 다른 제도를 통한 충족가능성",
+"alwServCn": "개인예산지원금 240만원 한도 내 서비스 지원(본인부담금 10%적용, 기초생활수급자 및 차상위계층 면제)",
+"aplyMtdCn": "온라인접수 또는 현장접수",
+"inqNum": "234",
+"lastModYmd": "20261016"
 }
 }
 }
