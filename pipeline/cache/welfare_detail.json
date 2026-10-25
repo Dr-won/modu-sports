@@ -1,7 +1,7 @@
 {
 "WLF00000026": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961403,
 "detail": {
 "servId": "WLF00000026",
 "servNm": "장애인자립자금대여",
@@ -16,14 +16,14 @@
 "srvPvsnNm": "현금대여(융자)",
 "lifeArray": "노년, 청년, 중장년",
 "trgterIndvdlArray": "장애인, 저소득",
-"intrsThemaArray": "일자리, 생활지원, 서민금융",
+"intrsThemaArray": "생활지원, 일자리, 서민금융",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00001060": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961411,
 "detail": {
 "servId": "WLF00001060",
 "servNm": "대학생 근로장학금 지원",
@@ -37,7 +37,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
 "lifeArray": "청년",
-"trgterIndvdlArray": "보훈대상자, 장애인, 다자녀, 다문화·탈북민, 저소득",
+"trgterIndvdlArray": "보훈대상자, 다자녀, 다문화·탈북민, 장애인, 저소득",
 "intrsThemaArray": "생활지원, 교육",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -45,7 +45,7 @@
 },
 "WLF00003207": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961412,
 "detail": {
 "servId": "WLF00003207",
 "servNm": "영농도우미 지원",
@@ -58,7 +58,7 @@
 "wlfareInfoOutlCn": "사고, 질병 농가에 영농도우미를 지원하여 안정적인 영농활동을 통한 농가소득 증대를 도모합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "프로그램/서비스(서비스)",
-"trgterIndvdlArray": "다문화·탈북민, 한부모·조손, 저소득, 장애인",
+"trgterIndvdlArray": "다문화·탈북민, 한부모·조손, 장애인, 저소득",
 "intrsThemaArray": "생활지원, 보호·돌봄",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -66,7 +66,7 @@
 },
 "WLF00001101": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961414,
 "detail": {
 "servId": "WLF00001101",
 "servNm": "폭력피해자 주거지원 사업",
@@ -79,7 +79,7 @@
 "wlfareInfoOutlCn": "가정폭력, 성폭력 등 폭력피해자들의 자립을 지원하고 사회 적응 여건을 조성하고자, 폭력 피해여성과 그 가족들이 공동으로 생활할 수 있는 주거 공간을 제공합니다.",
 "sprtCycNm": "1회성",
 "srvPvsnNm": "기타, 시설입소",
-"lifeArray": "중장년, 노년, 아동, 영유아, 청년, 청소년",
+"lifeArray": "노년, 중장년, 아동, 영유아, 청년, 청소년",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "안전·위기, 주거",
 "resultCode": "0",
@@ -88,7 +88,7 @@
 },
 "WLF00001188": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961415,
 "detail": {
 "servId": "WLF00001188",
 "servNm": "산모·신생아 건강관리 지원사업",
@@ -110,7 +110,7 @@
 },
 "WLF00000024": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961417,
 "detail": {
 "servId": "WLF00000024",
 "servNm": "아이돌봄서비스",
@@ -123,7 +123,7 @@
 "wlfareInfoOutlCn": "맞벌이를 하거나 갑자기 아이를 돌볼 수 없는 일이 생겼을 때 육아 도우미가 방문하여 12세 이하 자녀의 양육을 도와줍니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "기타",
-"lifeArray": "아동, 영유아, 청소년",
+"lifeArray": "영유아, 아동, 청소년",
 "trgterIndvdlArray": "다문화·탈북민, 다자녀, 장애인, 한부모·조손",
 "intrsThemaArray": "보호·돌봄, 보육",
 "resultCode": "0",
@@ -132,7 +132,7 @@
 },
 "WLF00003262": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961418,
 "detail": {
 "servId": "WLF00003262",
 "servNm": "장애아가족양육지원",
@@ -154,7 +154,7 @@
 },
 "WLF00001178": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961420,
 "detail": {
 "servId": "WLF00001178",
 "servNm": "청소년 발달장애인 방과후활동서비스",
@@ -176,7 +176,7 @@
 },
 "WLF00001165": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961421,
 "detail": {
 "servId": "WLF00001165",
 "servNm": "발달장애인 주간활동서비스",
@@ -198,7 +198,7 @@
 },
 "WLF00001140": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961423,
 "detail": {
 "servId": "WLF00001140",
 "servNm": "방과후보육료지원",
@@ -213,14 +213,14 @@
 "srvPvsnNm": "전자바우처(바우처)",
 "lifeArray": "아동",
 "trgterIndvdlArray": "저소득, 장애인, 한부모·조손",
-"intrsThemaArray": "교육, 보육",
+"intrsThemaArray": "보육, 교육",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00001087": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961424,
 "detail": {
 "servId": "WLF00001087",
 "servNm": "가사·간병 방문 지원사업",
@@ -241,7 +241,7 @@
 },
 "WLF00001067": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961425,
 "detail": {
 "servId": "WLF00001067",
 "servNm": "장애아보육료지원",
@@ -263,7 +263,7 @@
 },
 "WLF00000092": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961427,
 "detail": {
 "servId": "WLF00000092",
 "servNm": "저소득층 기저귀·조제분유 지원",
@@ -277,15 +277,15 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "전자바우처(바우처)",
 "lifeArray": "영유아, 임신 · 출산",
-"trgterIndvdlArray": "한부모·조손, 장애인, 다자녀, 저소득",
-"intrsThemaArray": "입양·위탁, 임신·출산, 보육",
+"trgterIndvdlArray": "한부모·조손, 다자녀, 장애인, 저소득",
+"intrsThemaArray": "입양·위탁, 보육, 임신·출산",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00000064": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961428,
 "detail": {
 "servId": "WLF00000064",
 "servNm": "발달장애인 부모상담지원사업",
@@ -298,7 +298,7 @@
 "wlfareInfoOutlCn": "발달장애인 부모에게 발달장애인의 양육과 부양에 따른 심리적 부담 완화 및 가족기능 향상 도모를 위한 전문 심리상담을 지원합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "전자바우처(바우처)",
-"lifeArray": "아동, 영유아",
+"lifeArray": "영유아, 아동",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "정신건강",
 "resultCode": "0",
@@ -307,7 +307,7 @@
 },
 "WLF00003279": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961429,
 "detail": {
 "servId": "WLF00003279",
 "servNm": "언어발달지원사업",
@@ -329,7 +329,7 @@
 },
 "WLF00003278": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961430,
 "detail": {
 "servId": "WLF00003278",
 "servNm": "여성장애인 출산비용지원",
@@ -351,7 +351,7 @@
 },
 "WLF00003265": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961432,
 "detail": {
 "servId": "WLF00003265",
 "servNm": "장애수당",
@@ -365,7 +365,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
 "lifeArray": "노년, 중장년, 청년",
-"trgterIndvdlArray": "장애인, 저소득",
+"trgterIndvdlArray": "저소득, 장애인",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -373,7 +373,7 @@
 },
 "WLF00003260": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961433,
 "detail": {
 "servId": "WLF00003260",
 "servNm": "장애인활동지원",
@@ -395,7 +395,7 @@
 },
 "WLF00003257": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961434,
 "detail": {
 "servId": "WLF00003257",
 "servNm": "이동통신요금감면",
@@ -408,7 +408,7 @@
 "wlfareInfoOutlCn": "사회적 취약계층을 대상으로 가계통신비 부담완화를 위해 통신요금을 감면합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "감면",
-"trgterIndvdlArray": "한부모·조손, 보훈대상자, 저소득, 장애인",
+"trgterIndvdlArray": "저소득, 장애인, 한부모·조손, 보훈대상자",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -416,7 +416,7 @@
 },
 "WLF00003249": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961436,
 "detail": {
 "servId": "WLF00003249",
 "servNm": "장애인연금",
@@ -438,7 +438,7 @@
 },
 "WLF00003211": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961438,
 "detail": {
 "servId": "WLF00003211",
 "servNm": "장애인보조기기 교부",
@@ -451,15 +451,15 @@
 "wlfareInfoOutlCn": "생활이 어려운 저소득 장애인에게 장애인보조기구를 교부함으로써 생활능력 향상 및 복지증진을 도모합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "현물지급",
-"trgterIndvdlArray": "장애인, 저소득",
-"intrsThemaArray": "신체건강, 생활지원",
+"trgterIndvdlArray": "저소득, 장애인",
+"intrsThemaArray": "생활지원, 신체건강",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00003198": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961439,
 "detail": {
 "servId": "WLF00003198",
 "servNm": "장애아동수당",
@@ -473,7 +473,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
 "lifeArray": "아동, 청소년",
-"trgterIndvdlArray": "장애인, 저소득",
+"trgterIndvdlArray": "저소득, 장애인",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -481,7 +481,7 @@
 },
 "WLF00003195": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961440,
 "detail": {
 "servId": "WLF00003195",
 "servNm": "발달재활서비스",
@@ -494,7 +494,7 @@
 "wlfareInfoOutlCn": "성장기 정신적, 감각적 장애아동의 인지, 의사소통, 적응행동, 감각, 운동 등의 기능향상과 행동발달을 위한 재활서비스를 지원하고, 관련 정보를 제공합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "전자바우처(바우처)",
-"lifeArray": "영유아, 아동, 청소년",
+"lifeArray": "아동, 영유아, 청소년",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "교육, 정신건강, 신체건강",
 "resultCode": "0",
@@ -503,7 +503,7 @@
 },
 "WLF00000072": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961441,
 "detail": {
 "servId": "WLF00000072",
 "servNm": "에너지바우처",
@@ -525,7 +525,7 @@
 },
 "WLF00004638": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961442,
 "detail": {
 "servId": "WLF00004638",
 "servNm": "가스요금할인",
@@ -539,7 +539,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "감면",
 "lifeArray": "중장년, 청년, 청소년, 노년",
-"trgterIndvdlArray": "보훈대상자, 다자녀, 저소득, 장애인",
+"trgterIndvdlArray": "다자녀, 보훈대상자, 저소득, 장애인",
 "intrsThemaArray": "서민금융",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -547,7 +547,7 @@
 },
 "WLF00001136": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961444,
 "detail": {
 "servId": "WLF00001136",
 "servNm": "보험급여(건강보험 장애인보조기기)",
@@ -568,7 +568,7 @@
 },
 "WLF00006324": {
 "_stamp": "20260618",
-"_fetched": 1790072166,
+"_fetched": 1792961407,
 "detail": {
 "servId": "WLF00006324",
 "servNm": "무료법률구조",
@@ -581,8 +581,7 @@
 "wlfareInfoOutlCn": "사회적, 경제적 약자(기준 중위소득 125% 이하 국민 등)에 대한 무료법률구조를 지원합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "프로그램/서비스(서비스)",
-"lifeArray": "임신 · 출산, 노년, 청소년, 아동, 청년, 중장년, 영유아",
-"trgterIndvdlArray": "한부모·조손, 보훈대상자, 다문화·탈북민, 장애인, 저소득",
+"trgterIndvdlArray": "한부모·조손, 다문화·탈북민, 보훈대상자, 저소득, 장애인",
 "intrsThemaArray": "법률",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -590,7 +589,7 @@
 },
 "WLF00006298": {
 "_stamp": "20260605",
-"_fetched": 1790072166,
+"_fetched": 1792961409,
 "detail": {
 "servId": "WLF00006298",
 "servNm": "자동차사고 피해자 지원사업",
@@ -602,17 +601,16 @@
 "rprsCtadr": "1544-0049",
 "wlfareInfoOutlCn": "자동차사고(교통사고)로 인한 사망 또는 중증후유장애로 인해 피해자 본인과 그 가족이 겪는 경제적·생활상의 어려움을 완화하고 생활안정을 지원합니다.",
 "sprtCycNm": "년",
-"srvPvsnNm": "프로그램/서비스(서비스), 자원봉사, 현물지급, 현금대여(융자), 현금지급",
-"lifeArray": "중장년, 영유아, 청년, 노년, 임신 · 출산, 아동, 청소년",
+"srvPvsnNm": "자원봉사, 프로그램/서비스(서비스), 현물지급, 현금대여(융자), 현금지급",
 "trgterIndvdlArray": "저소득, 장애인",
-"intrsThemaArray": "서민금융",
+"intrsThemaArray": "서민금융, 교육, 생활지원, 정신건강",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00006334": {
 "_stamp": "20260622",
-"_fetched": 1790072166,
+"_fetched": 1792961445,
 "detail": {
 "servId": "WLF00006334",
 "servNm": "장애인거주시설 이용",
@@ -633,7 +631,7 @@
 },
 "WLF00006237": {
 "_stamp": "20260402",
-"_fetched": 1790072166,
+"_fetched": 1792961446,
 "detail": {
 "servId": "WLF00006237",
 "servNm": "안부살핌 우편서비스 사업",
@@ -647,7 +645,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "현물지급",
 "lifeArray": "청년, 노년, 중장년",
-"trgterIndvdlArray": "저소득, 장애인, 한부모·조손",
+"trgterIndvdlArray": "장애인, 저소득, 한부모·조손",
 "intrsThemaArray": "안전·위기",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -655,7 +653,7 @@
 },
 "WLF00006224": {
 "_stamp": "20260316",
-"_fetched": 1790072166,
+"_fetched": 1792961448,
 "detail": {
 "servId": "WLF00006224",
 "servNm": "저소득층 수도요금감면",
@@ -677,7 +675,7 @@
 },
 "WLF00006317": {
 "_stamp": "20260610",
-"_fetched": 1790072166,
+"_fetched": 1792961406,
 "detail": {
 "servId": "WLF00006317",
 "servNm": "발달장애인 자기주도 재직자 훈련",
@@ -690,7 +688,6 @@
 "wlfareInfoOutlCn": "발달장애 근로자에게 직업생활 유지를 위한 직무능력 향상 및 기초 소양 훈련 프로그램을 제공합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "기타",
-"lifeArray": "청년, 임신 · 출산, 노년, 청소년, 아동, 영유아, 중장년",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "교육, 일자리",
 "resultCode": "0",
@@ -699,7 +696,7 @@
 },
 "WLF00006311": {
 "_stamp": "20260608",
-"_fetched": 1790072166,
+"_fetched": 1792961405,
 "detail": {
 "servId": "WLF00006311",
 "servNm": "법문화교육(교육센터)",
@@ -712,7 +709,7 @@
 "wlfareInfoOutlCn": "다문화가족, 북한이탈주민, 장애인, 농업인, 청소년 등에 맞춤형, 체험형 법교육 프로그램을 진행합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "프로그램/서비스(서비스)",
-"lifeArray": "영유아, 중장년, 노년, 임신 · 출산, 아동, 청소년, 청년",
+"lifeArray": "청소년",
 "trgterIndvdlArray": "장애인, 다문화·탈북민",
 "intrsThemaArray": "법률, 교육",
 "resultCode": "0",
@@ -721,7 +718,7 @@
 },
 "WLF00003269": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961449,
 "detail": {
 "servId": "WLF00003269",
 "servNm": "기존주택 전세임대주택 지원사업",
@@ -734,7 +731,7 @@
 "wlfareInfoOutlCn": "도심 내 저소득층이 현 생활권에서 안정적으로 거주할 수 있도록 임대료가 저렴한 임대주택을 지원하여 주거안정을 도모합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "현물지급",
-"trgterIndvdlArray": "저소득, 장애인, 다자녀, 한부모·조손",
+"trgterIndvdlArray": "장애인, 저소득, 다자녀, 한부모·조손",
 "intrsThemaArray": "주거",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -742,7 +739,7 @@
 },
 "WLF00006299": {
 "_stamp": "20260605",
-"_fetched": 1790072166,
+"_fetched": 1792961450,
 "detail": {
 "servId": "WLF00006299",
 "servNm": "지역장애인보건의료센터",
@@ -756,14 +753,14 @@
 "sprtCycNm": "수시",
 "srvPvsnNm": "프로그램/서비스(서비스)",
 "trgterIndvdlArray": "장애인",
-"intrsThemaArray": "신체건강, 정신건강",
+"intrsThemaArray": "정신건강, 신체건강",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00006297": {
 "_stamp": "20260605",
-"_fetched": 1790072166,
+"_fetched": 1792961451,
 "detail": {
 "servId": "WLF00006297",
 "servNm": "장애인 창업보육실 운영",
@@ -776,7 +773,7 @@
 "wlfareInfoOutlCn": "우수한 창업아이템을 보유한 창업 초기의 장애인 기업을 대상으로 비즈니스 공간 및 사무기기, 기업지원정책 등을 지원합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "프로그램/서비스(서비스)",
-"lifeArray": "청년, 중장년",
+"lifeArray": "중장년, 청년",
 "trgterIndvdlArray": "보훈대상자, 장애인",
 "intrsThemaArray": "일자리",
 "resultCode": "0",
@@ -785,7 +782,7 @@
 },
 "WLF00000888": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961453,
 "detail": {
 "servId": "WLF00000888",
 "servNm": "영구임대주택공급",
@@ -806,7 +803,7 @@
 },
 "WLF00003244": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961454,
 "detail": {
 "servId": "WLF00003244",
 "servNm": "국민임대주택공급",
@@ -827,7 +824,7 @@
 },
 "WLF00004663": {
 "_stamp": "20220603",
-"_fetched": 1790072166,
+"_fetched": 1792961455,
 "detail": {
 "servId": "WLF00004663",
 "servNm": "통합공공임대",
@@ -849,7 +846,7 @@
 },
 "WLF00006294": {
 "_stamp": "20260602",
-"_fetched": 1790072166,
+"_fetched": 1792961410,
 "detail": {
 "servId": "WLF00006294",
 "servNm": "장애인 등록 신청",
@@ -862,16 +859,14 @@
 "wlfareInfoOutlCn": "장애인복지법 제32조에 따라 본인, 법정대리인 또는 보호자가 거주지 읍,면,동 행정복지센터에 장애인 등록을 신청할 수 있습니다.",
 "sprtCycNm": "1회성",
 "srvPvsnNm": "기타",
-"lifeArray": "중장년, 영유아, 청년, 노년, 임신 · 출산, 청소년, 아동",
 "trgterIndvdlArray": "장애인",
-"intrsThemaArray": "법률, 보호·돌봄, 생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00006241": {
 "_stamp": "20260409",
-"_fetched": 1790072166,
+"_fetched": 1792961456,
 "detail": {
 "servId": "WLF00006241",
 "servNm": "정신질환자 치료비 지원 사업",
@@ -893,7 +888,7 @@
 },
 "WLF00006227": {
 "_stamp": "20260316",
-"_fetched": 1790072166,
+"_fetched": 1792961457,
 "detail": {
 "servId": "WLF00006227",
 "servNm": "유선전화(인터넷요금전화포함), 초고속(인터넷통신)요금감면",
@@ -906,8 +901,8 @@
 "wlfareInfoOutlCn": "사회적 취약계층을 대상으로 가계통신비 부담완화를 위해 통신요금을 감면합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "감면",
-"lifeArray": "중장년, 청년, 노년, 아동, 청소년",
-"trgterIndvdlArray": "보훈대상자, 장애인, 저소득",
+"lifeArray": "중장년, 청년, 노년, 청소년, 아동",
+"trgterIndvdlArray": "보훈대상자, 저소득, 장애인",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -915,7 +910,7 @@
 },
 "WLF00000104": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961458,
 "detail": {
 "servId": "WLF00000104",
 "servNm": "시각·청각장애인용 TV 보급사업",
@@ -928,7 +923,7 @@
 "wlfareInfoOutlCn": "시각&middot;청각 장애인이 비장애인과 동등한 조건에서 방송매체에 접근할 수 있도록  장애인용 맞춤형 TV를 보급하여 방송소외계층의 방송접근권을 보장합니다.",
 "sprtCycNm": "1회성",
 "srvPvsnNm": "현물지급",
-"trgterIndvdlArray": "저소득, 장애인, 보훈대상자",
+"trgterIndvdlArray": "저소득, 보훈대상자, 장애인",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -936,7 +931,7 @@
 },
 "WLF00003219": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961460,
 "detail": {
 "servId": "WLF00003219",
 "servNm": "통신중계서비스 제공",
@@ -957,7 +952,7 @@
 },
 "WLF00000087": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961461,
 "detail": {
 "servId": "WLF00000087",
 "servNm": "지방세 비과세감면(주민세, 취득세, 자동차세, 재산세, 지역자원시설세 등)",
@@ -970,7 +965,7 @@
 "wlfareInfoOutlCn": "기초생활수급자, 국가유공자, 장애인 등이 부담하는 지방세를 감면&middot;면제하여 생활 안정과 시설 운영을 돕습니다.",
 "sprtCycNm": "1회성",
 "srvPvsnNm": "기타",
-"trgterIndvdlArray": "보훈대상자, 장애인, 다자녀, 저소득",
+"trgterIndvdlArray": "보훈대상자, 다자녀, 장애인, 저소득",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -978,7 +973,7 @@
 },
 "WLF00001120": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961462,
 "detail": {
 "servId": "WLF00001120",
 "servNm": "교육복지우선지원사업",
@@ -1000,7 +995,7 @@
 },
 "WLF00005031": {
 "_stamp": "20230329",
-"_fetched": 1790072166,
+"_fetched": 1792961463,
 "detail": {
 "servId": "WLF00005031",
 "servNm": "발달장애인 긴급돌봄사업",
@@ -1022,7 +1017,7 @@
 },
 "WLF00003220": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961464,
 "detail": {
 "servId": "WLF00003220",
 "servNm": "여성장애인교육지원",
@@ -1043,7 +1038,7 @@
 },
 "WLF00005444": {
 "_stamp": "20240521",
-"_fetched": 1790072166,
+"_fetched": 1792961465,
 "detail": {
 "servId": "WLF00005444",
 "servNm": "취약계층 고효율가전 구매지원(취약계층 에너지복지사업)",
@@ -1064,7 +1059,7 @@
 },
 "WLF00001187": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961466,
 "detail": {
 "servId": "WLF00001187",
 "servNm": "최저임금적용제외 근로장애인 전환지원",
@@ -1079,14 +1074,14 @@
 "srvPvsnNm": "프로그램/서비스(서비스), 현금지급",
 "lifeArray": "중장년, 청년",
 "trgterIndvdlArray": "장애인",
-"intrsThemaArray": "생활지원, 일자리",
+"intrsThemaArray": "일자리, 생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00000065": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961468,
 "detail": {
 "servId": "WLF00000065",
 "servNm": "발달장애인 공공후견지원 사업",
@@ -1108,28 +1103,28 @@
 },
 "WLF00006265": {
 "_stamp": "20260506",
-"_fetched": 1790072166,
+"_fetched": 1792961402,
 "detail": {
 "servId": "WLF00006265",
 "servNm": "연탄쿠폰",
-"jurMnofNm": "산업통상자원부 석탄산업과",
+"jurMnofNm": "산업통상부 석탄산업과",
 "tgtrDtlCn": "소득이 중위소득의 50% 이하로서 부양의무자가 없거나 부양의무자가 있어도 부양받을 수 없는 가구\r수급권자에 해당하지 않는 계층으로서 소득이 중위소득의 50%이하인 가구\r주민등록등본상 만65세 이상인 자\r｢장애인복지법｣에서 규정하는 장애인\r한부모 가구 (「한부모가족지원법」 제5조)\r소년소녀가정(보건복지부에서 정한 아동분야 사업 중 소년소녀가정 지원대상에   해당하는 사람(「아동복지법」 제3조에 의한 가정위탁보호 아동을 포함)",
 "slctCritCn": "기초생활수급가구 : 「국민기초생활보장법」 제5조 제1항에서 규정하는 부양의무자가 없거나 부양의무자가 있어도 부양능력이 없는 자로서 소득인정액이 매년 보건복지부장관이 정하는 최저생계비 이하인 자\r차상위계층가구\r - 차상위계층 : 「국민기초생활보장법」 제2조제11호 및 시행령 제3조의2에서 규정하는 소득인정액이 최저생계비의 120% 이하이면서 정부의 기초생활보장 수급대상에는 포함되지 못하는 자 - 한부모가족 : 「한부모가족지원법에 따라 소득인정액이 최저생계비의 130%이하인 자\r소외계층가구\r - 만 65세 이상의 독거노인 - 「장애인복지법」에서 규정하는 장애인",
 "alwServCn": "연탄쿠폰 배부는 연 1회(472,000원, '25년기준)이며, 쿠폰가격은 연탄 가격고시에 따라 변동됩니다.",
 "crtrYr": "2026",
-"rprsCtadr": "1670-7653",
+"rprsCtadr": "033-736-5000",
 "wlfareInfoOutlCn": "저소득층의 난방비 부담경감을 위해 인상에 대한 차액분을 쿠폰으로 지원합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "프로그램/서비스(서비스)",
 "lifeArray": "중장년, 노년, 청소년, 아동, 청년",
-"trgterIndvdlArray": "한부모·조손, 저소득, 장애인",
+"trgterIndvdlArray": "한부모·조손, 장애인, 저소득",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00003230": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961469,
 "detail": {
 "servId": "WLF00003230",
 "servNm": "영주귀국 사할린한인 정착비 및 시설운영 지원",
@@ -1143,15 +1138,15 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "기타, 현금지급, 시설입소",
 "lifeArray": "노년",
-"trgterIndvdlArray": "저소득, 장애인",
-"intrsThemaArray": "생활지원, 주거",
+"trgterIndvdlArray": "장애인, 저소득",
+"intrsThemaArray": "주거, 생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00001117": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961470,
 "detail": {
 "servId": "WLF00001117",
 "servNm": "장애인문화·예술 지원",
@@ -1172,7 +1167,7 @@
 },
 "WLF00004637": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961472,
 "detail": {
 "servId": "WLF00004637",
 "servNm": "TV수신료 면제",
@@ -1194,7 +1189,7 @@
 },
 "WLF00001182": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961473,
 "detail": {
 "servId": "WLF00001182",
 "servNm": "학교우유급식",
@@ -1208,7 +1203,7 @@
 "sprtCycNm": "수시",
 "srvPvsnNm": "현물지급",
 "lifeArray": "아동, 청소년",
-"trgterIndvdlArray": "저소득, 한부모·조손, 보훈대상자, 장애인",
+"trgterIndvdlArray": "저소득, 한부모·조손, 장애인, 보훈대상자",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -1216,7 +1211,7 @@
 },
 "WLF00003189": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961474,
 "detail": {
 "servId": "WLF00003189",
 "servNm": "중증장애인직업재활지원",
@@ -1238,7 +1233,7 @@
 },
 "WLF00000025": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961475,
 "detail": {
 "servId": "WLF00000025",
 "servNm": "장애인일자리지원",
@@ -1251,7 +1246,7 @@
 "wlfareInfoOutlCn": "18세 이상 미취업 장애인에게 공공형 일자리를 제공하여 사회참여 확대와 소득보장을 도모합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
-"lifeArray": "청년, 중장년, 노년",
+"lifeArray": "중장년, 청년, 노년",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "일자리",
 "resultCode": "0",
@@ -1260,7 +1255,7 @@
 },
 "WLF00001133": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961477,
 "detail": {
 "servId": "WLF00001133",
 "servNm": "장애인 건강검진기관 지원",
@@ -1281,7 +1276,7 @@
 },
 "WLF00000032": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961478,
 "detail": {
 "servId": "WLF00000032",
 "servNm": "실종아동 등 보호 및 지원",
@@ -1303,7 +1298,7 @@
 },
 "WLF00004639": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961479,
 "detail": {
 "servId": "WLF00004639",
 "servNm": "전기요금 복지할인",
@@ -1317,7 +1312,7 @@
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
 "lifeArray": "노년, 청년, 중장년",
-"trgterIndvdlArray": "장애인, 저소득, 보훈대상자",
+"trgterIndvdlArray": "저소득, 장애인, 보훈대상자",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -1325,7 +1320,7 @@
 },
 "WLF00000099": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961480,
 "detail": {
 "servId": "WLF00000099",
 "servNm": "저소득장애인 진단서 발급비 및 검사비 지원사업",
@@ -1338,16 +1333,16 @@
 "wlfareInfoOutlCn": "저소득장애인 등에게 장애정도 심사용 진단서 발급비 및 검사비 일부를 지원합니다.",
 "sprtCycNm": "수시",
 "srvPvsnNm": "현금지급",
-"lifeArray": "노년, 중장년, 청년",
+"lifeArray": "노년, 청년, 중장년",
 "trgterIndvdlArray": "장애인, 저소득",
-"intrsThemaArray": "신체건강, 정신건강",
+"intrsThemaArray": "정신건강, 신체건강",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00000027": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961481,
 "detail": {
 "servId": "WLF00000027",
 "servNm": "장애인 운전교육 사업",
@@ -1368,7 +1363,7 @@
 },
 "WLF00000066": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961483,
 "detail": {
 "servId": "WLF00000066",
 "servNm": "장애인 집합 정보화교육",
@@ -1389,7 +1384,7 @@
 },
 "WLF00001062": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961484,
 "detail": {
 "servId": "WLF00001062",
 "servNm": "정보통신보조기기 보급",
@@ -1402,7 +1397,7 @@
 "wlfareInfoOutlCn": "장애인의 기능적 한계를 보완개선하여 정보화를 통한 역량을 증진할 수 있도록 정보통신보조기기 보급을 지원합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "현물지급",
-"trgterIndvdlArray": "저소득, 장애인, 보훈대상자",
+"trgterIndvdlArray": "저소득, 보훈대상자, 장애인",
 "intrsThemaArray": "생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -1410,7 +1405,7 @@
 },
 "WLF00000067": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961485,
 "detail": {
 "servId": "WLF00000067",
 "servNm": "의료급여 장애인보조기기 지원",
@@ -1431,7 +1426,7 @@
 },
 "WLF00001113": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961486,
 "detail": {
 "servId": "WLF00001113",
 "servNm": "(특수교육대상자) 치료지원서비스",
@@ -1453,7 +1448,7 @@
 },
 "WLF00006226": {
 "_stamp": "20260316",
-"_fetched": 1790072166,
+"_fetched": 1792961487,
 "detail": {
 "servId": "WLF00006226",
 "servNm": "저소득층, 사회적 배려대상 및 다자녀가구 지역난방 열요금 지원",
@@ -1475,7 +1470,7 @@
 },
 "WLF00001093": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961488,
 "detail": {
 "servId": "WLF00001093",
 "servNm": "독거노인·장애인 응급안전안심서비스",
@@ -1497,7 +1492,7 @@
 },
 "WLF00001173": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961490,
 "detail": {
 "servId": "WLF00001173",
 "servNm": "국립특수학교 및 국립부설학교 특수학급 지원",
@@ -1519,7 +1514,7 @@
 },
 "WLF00000062": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961491,
 "detail": {
 "servId": "WLF00000062",
 "servNm": "기존주택등 매입임대주택 지원사업",
@@ -1541,7 +1536,7 @@
 },
 "WLF00006260": {
 "_stamp": "20260414",
-"_fetched": 1790072166,
+"_fetched": 1792961492,
 "detail": {
 "servId": "WLF00006260",
 "servNm": "장애인 주택개조사업",
@@ -1554,7 +1549,7 @@
 "wlfareInfoOutlCn": "저소득 장애인이 거주하는 주택의 편의시설·안전장치 설치·개선비용을 지원, 일상생활에서의 이동안전 및 활동편의 증진을 목적으로 합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "프로그램/서비스(서비스)",
-"trgterIndvdlArray": "장애인, 저소득",
+"trgterIndvdlArray": "저소득, 장애인",
 "intrsThemaArray": "주거",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -1562,7 +1557,7 @@
 },
 "WLF00001134": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961494,
 "detail": {
 "servId": "WLF00001134",
 "servNm": "권역재활병원 공공재활프로그램 운영지원",
@@ -1583,7 +1578,7 @@
 },
 "WLF00006257": {
 "_stamp": "20260413",
-"_fetched": 1790072166,
+"_fetched": 1792961495,
 "detail": {
 "servId": "WLF00006257",
 "servNm": "장애인 건강보험료 경감",
@@ -1604,7 +1599,7 @@
 },
 "WLF00006253": {
 "_stamp": "20260413",
-"_fetched": 1790072166,
+"_fetched": 1792961496,
 "detail": {
 "servId": "WLF00006253",
 "servNm": "장애인고용개선장려금",
@@ -1625,7 +1620,7 @@
 },
 "WLF00006252": {
 "_stamp": "20260413",
-"_fetched": 1790072166,
+"_fetched": 1792961497,
 "detail": {
 "servId": "WLF00006252",
 "servNm": "근로지원인 지원",
@@ -1638,7 +1633,7 @@
 "wlfareInfoOutlCn": "업무에 필요한 핵심 업무 수행능력을 보유하고 있으나, 장애로 부수적인 업무를 수행하는데 어려움을 겪고 있는 중증장애인 근로자에게 근로지원인을 배치하여 안정적·지속적인 직업생활을 지원합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급, 프로그램/서비스(서비스)",
-"lifeArray": "중장년, 청년",
+"lifeArray": "청년, 중장년",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "서민금융",
 "resultCode": "0",
@@ -1647,7 +1642,7 @@
 },
 "WLF00006251": {
 "_stamp": "20260413",
-"_fetched": 1790072166,
+"_fetched": 1792961404,
 "detail": {
 "servId": "WLF00006251",
 "servNm": "중증장애인확인서 발급",
@@ -1660,7 +1655,6 @@
 "wlfareInfoOutlCn": "「장애인고용촉진 및 직업재활법」 상 중증장애인 여부를 확인하는 서류로서, 중증장애인여부를 '중증장애인 확인서'로 별도 확인할 수 있습니다.",
 "sprtCycNm": "1회성",
 "srvPvsnNm": "기타",
-"lifeArray": "청년, 노년, 임신 · 출산, 아동, 청소년, 중장년, 영유아",
 "trgterIndvdlArray": "장애인",
 "intrsThemaArray": "신체건강, 일자리",
 "resultCode": "0",
@@ -1669,7 +1663,7 @@
 },
 "WLF00001150": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961498,
 "detail": {
 "servId": "WLF00001150",
 "servNm": "발달장애인 가족휴식지원사업",
@@ -1690,7 +1684,7 @@
 },
 "WLF00001075": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961499,
 "detail": {
 "servId": "WLF00001075",
 "servNm": "장애학생 정보격차 해소 지원",
@@ -1712,7 +1706,7 @@
 },
 "WLF00001143": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961501,
 "detail": {
 "servId": "WLF00001143",
 "servNm": "시각장애인음악재활센터지원",
@@ -1733,7 +1727,7 @@
 },
 "WLF00001153": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961502,
 "detail": {
 "servId": "WLF00001153",
 "servNm": "장애인보조견전문훈련기관지원",
@@ -1754,7 +1748,7 @@
 },
 "WLF00001151": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961503,
 "detail": {
 "servId": "WLF00001151",
 "servNm": "중도시각장애인재활훈련지원",
@@ -1775,7 +1769,7 @@
 },
 "WLF00003217": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961625,
 "detail": {
 "servId": "WLF00003217",
 "servNm": "장애인자립생활지원센터 지원",
@@ -1796,7 +1790,7 @@
 },
 "WLF00001070": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961627,
 "detail": {
 "servId": "WLF00001070",
 "servNm": "척수장애인재활훈련지원",
@@ -1817,7 +1811,7 @@
 },
 "WLF00003225": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961628,
 "detail": {
 "servId": "WLF00003225",
 "servNm": "환경보건이용권",
@@ -1830,15 +1824,15 @@
 "wlfareInfoOutlCn": "환경보건이용권(10만원 상당 포인트)을 통해 기초생활수급자 13세 미만 어린이에게 환경성질환 예방용품, 청소서비스, 건강체험, 진료비 지원 및 실내환경 유해인자 진단·컨설팅 등 지원합니다.",
 "sprtCycNm": "년",
 "srvPvsnNm": "프로그램/서비스(서비스), 현물지급",
-"trgterIndvdlArray": "한부모·조손, 장애인, 저소득",
-"intrsThemaArray": "안전·위기, 생활지원, 주거, 신체건강",
+"trgterIndvdlArray": "한부모·조손, 저소득, 장애인",
+"intrsThemaArray": "안전·위기, 신체건강, 주거, 생활지원",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
 }
 },
 "WLF00003231": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961629,
 "detail": {
 "servId": "WLF00003231",
 "servNm": "보조공학기기지원",
@@ -1860,7 +1854,7 @@
 },
 "WLF00003259": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961630,
 "detail": {
 "servId": "WLF00003259",
 "servNm": "중증장애인지원고용",
@@ -1881,7 +1875,7 @@
 },
 "WLF00001090": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961632,
 "detail": {
 "servId": "WLF00001090",
 "servNm": "장애인고용장려금",
@@ -1902,7 +1896,7 @@
 },
 "WLF00004651": {
 "_stamp": "20210904",
-"_fetched": 1790072166,
+"_fetched": 1792961633,
 "detail": {
 "servId": "WLF00004651",
 "servNm": "직업능력개발운영(훈련수당)",
@@ -1924,7 +1918,7 @@
 },
 "WLF00000946": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961634,
 "detail": {
 "servId": "WLF00000946",
 "servNm": "산림복지서비스이용권",
@@ -1945,7 +1939,7 @@
 },
 "WLF00003173": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961635,
 "detail": {
 "servId": "WLF00003173",
 "servNm": "장애인스포츠강좌이용권 지원",
@@ -1957,9 +1951,9 @@
 "rprsCtadr": "1551-0078",
 "wlfareInfoOutlCn": "장애인 대상 스포츠 참여 기회를 제공하여 삶의 질 향상, 사회적 소외감을 해소하여 사회통합에 기여합니다.",
 "sprtCycNm": "월",
-"srvPvsnNm": "실물바우처, 전자바우처(바우처)",
-"lifeArray": "청소년, 청년, 아동, 노년, 중장년",
-"trgterIndvdlArray": "저소득, 장애인",
+"srvPvsnNm": "전자바우처(바우처), 실물바우처",
+"lifeArray": "청소년, 청년, 아동, 중장년, 노년",
+"trgterIndvdlArray": "장애인, 저소득",
 "intrsThemaArray": "문화·여가",
 "resultCode": "0",
 "resultMessage": "SUCCESS"
@@ -1967,7 +1961,7 @@
 },
 "WLF00006207": {
 "_stamp": "20260309",
-"_fetched": 1790072166,
+"_fetched": 1792961636,
 "detail": {
 "servId": "WLF00006207",
 "servNm": "웹정보접근성제고",
@@ -1988,7 +1982,7 @@
 },
 "WLF00000068": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961637,
 "detail": {
 "servId": "WLF00000068",
 "servNm": "장애인고용증진융자",
@@ -2009,7 +2003,7 @@
 },
 "WLF00003181": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961639,
 "detail": {
 "servId": "WLF00003181",
 "servNm": "장애인의료비지원",
@@ -2030,7 +2024,7 @@
 },
 "WLF00001154": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961640,
 "detail": {
 "servId": "WLF00001154",
 "servNm": "중증장애인근로자 출퇴근비용 지원 사업",
@@ -2051,7 +2045,7 @@
 },
 "WLF00005034": {
 "_stamp": "20230414",
-"_fetched": 1790072166,
+"_fetched": 1792961641,
 "detail": {
 "servId": "WLF00005034",
 "servNm": "장애인 건강주치의 시범사업",
@@ -2072,7 +2066,7 @@
 },
 "WLF00005853": {
 "_stamp": "20250328",
-"_fetched": 1790072166,
+"_fetched": 1792961642,
 "detail": {
 "servId": "WLF00005853",
 "servNm": "장애인 개인예산제 운영",
@@ -2093,7 +2087,7 @@
 },
 "WLF00001149": {
 "_stamp": "20210903",
-"_fetched": 1790072166,
+"_fetched": 1792961643,
 "detail": {
 "servId": "WLF00001149",
 "servNm": "공공산림가꾸기",
@@ -2106,7 +2100,7 @@
 "wlfareInfoOutlCn": "청년 실업자나 장년층 퇴직자 등을 산림사업에 투입하여 일자리 창출에 기여합니다.",
 "sprtCycNm": "월",
 "srvPvsnNm": "현금지급",
-"lifeArray": "노년, 중장년, 청년",
+"lifeArray": "중장년, 노년, 청년",
 "trgterIndvdlArray": "저소득, 한부모·조손, 장애인",
 "intrsThemaArray": "일자리, 서민금융",
 "resultCode": "0",
@@ -2115,7 +2109,7 @@
 },
 "WLF00004655": {
 "_stamp": "20211018",
-"_fetched": 1790072166,
+"_fetched": 1792961645,
 "detail": {
 "servId": "WLF00004655",
 "servNm": "장애인취업성공패키지",
@@ -2137,7 +2131,7 @@
 },
 "WLF00004654": {
 "_stamp": "20211018",
-"_fetched": 1790072166,
+"_fetched": 1792961646,
 "detail": {
 "servId": "WLF00004654",
 "servNm": "장애인인턴제",
@@ -20670,8 +20664,8 @@
 }
 },
 "WLF00003424": {
-"_stamp": "20250531",
-"_fetched": 1790072166,
+"_stamp": "20261022",
+"_fetched": 1792961648,
 "detail": {
 "resultCode": "0",
 "resultMessage": "SUCCESS",
@@ -20691,8 +20685,8 @@
 "slctCritCn": "관내 거주 등록장애인 중 장애인 보조기기(전동스쿠터, 전동휠체어 등) 사용자",
 "alwServCn": "○ 장애인보조기기 수리비용 지원   가. 품     목 : 이동형 보조기기 3종(수동휠체어, 전동휠체어, 전동스쿠터)   나. 지원기준      - 기초생활수급자 및 차상위계층 장애인에게 연간 20만원 이내 지원,        그 외 일반 장애인은 연간 10만원 이내 지원(초과금액의 경우 본인부담)     다. 지원대상: 관내 등록 장애인",
 "aplyMtdCn": "1. 신청 ○ 본인 및 가족 등 신청 ○ 장애인보조기기 수리 신청서  2. 지원대상 여부 판단 및 지정수리업체 통보(읍？？면) ○ 관내 등록장애인, 수급자 등 적격여부 확인 ○ 수리비용의 지원기준금액 초과여부 ○ 중복지급 등 지원 제한대상에 해당하는 지 확인 ○ 부적격한 경우 그 사유와 관련 근거를 기재하여 통보(지급기준 부적합, 중복청구, 내구연한 미경과, 미등록 장애인 등)   3. 보조기기 수리비용 청구서 제출(지정업체→군)  ○ 지정수리업체는 매달 말일까지 수리비용 청구 ○ 장애인보조기기 수리비용 청구서 및 구비서류 첨부  4. 수리비용 지급(군→지정업체) ○ 보조기기 수리비용 지급청구를 받은 군수는 그 지급여부를 결정하여 다음달 10일 이내 지정수리업체 지정계좌에 입금",
-"inqNum": "2017",
-"lastModYmd": "20250531"
+"inqNum": "2574",
+"lastModYmd": "20261022"
 }
 },
 "WLF00001247": {
@@ -21592,6 +21586,113 @@
 "aplyMtdCn": "온라인접수 또는 현장접수",
 "inqNum": "234",
 "lastModYmd": "20261016"
+}
+},
+"WLF00006803": {
+"_stamp": "20261022",
+"_fetched": 1792961647,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006803",
+"servNm": "장애인가족사랑여행지원사업",
+"enfcBgngYmd": "20230101",
+"enfcEndYmd": "99991231",
+"bizChrDeptNm": "전남광주통합특별시 해남군 복지정책과",
+"ctpvNm": "전남광주통합특별시",
+"sggNm": "해남군",
+"servDgst": "여행 기회가 적은 저소득층 장애인 가정의 여행비를 지원함으로써 가족 간 유대감 제고 및 장애인 복지 실현",
+"trgterIndvdlNmArray": "장애인, 저소득",
+"intrsThemaNmArray": "서민금융",
+"sprtCycNm": "1회성",
+"srvPvsnNm": "현금지급",
+"aplyMtdNm": "방문",
+"sprtTrgtCn": "관내 저소득층(기준중위소득 120%이내) 장애인 가족",
+"slctCritCn": "기준 중위소득 120%",
+"alwServCn": "가구당 30만원 이내",
+"aplyMtdCn": "읍면사무소 방문하여 신청서 및 개인정보제공 및 활용동의서, 등본 , 통장사본 제출",
+"inqNum": "499",
+"lastModYmd": "20261022"
+}
+},
+"WLF00006801": {
+"_stamp": "20261021",
+"_fetched": 1792961649,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006801",
+"servNm": "장애인 체력단련센터 운영",
+"enfcBgngYmd": "20261013",
+"enfcEndYmd": "99991231",
+"bizChrDeptNm": "경기도 광명시 돌봄복지국 노인장애인과",
+"ctpvNm": "경기도",
+"sggNm": "광명시",
+"servDgst": "○ 사업목적: 장애인에게 재활체육 서비스를 제공함으로써 장애인들의 신체적 기능 강화 및 재활 의욕 고취\n○ 지원대상: 장애인 및 장애인가족, 수급자 등 저소득 시민\n○ 서비스내용: 맞춤형 재활 운동 지도 및 재활기구 유지보수",
+"trgterIndvdlNmArray": "장애인",
+"sprtCycNm": "수시",
+"srvPvsnNm": "프로그램/서비스(서비스)",
+"aplyMtdNm": "방문, 전화",
+"sprtTrgtCn": "- 장애인 및 장애인가족, 수급자 등 저소득 시민",
+"slctCritCn": "- 본인 신청",
+"alwServCn": "체력단련실 이용",
+"aplyMtdCn": "전화 및 방문 접수",
+"inqNum": "437",
+"lastModYmd": "20261021"
+}
+},
+"WLF00006800": {
+"_stamp": "20261021",
+"_fetched": 1792961649,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006800",
+"servNm": "장애어르신 쉼마루",
+"enfcBgngYmd": "20251013",
+"enfcEndYmd": "99991231",
+"bizChrDeptNm": "경기도 광명시 돌봄복지국 노인장애인과",
+"ctpvNm": "경기도",
+"sggNm": "광명시",
+"servDgst": "장애인의 고령화에 따른 사회문제 발생 예방 및 활기찬 노후 지원",
+"lifeNmArray": "노년",
+"trgterIndvdlNmArray": "장애인",
+"sprtCycNm": "수시",
+"srvPvsnNm": "프로그램/서비스(서비스)",
+"aplyMtdNm": "방문, 전화",
+"sprtTrgtCn": "□ 시 설 명 : 장애어르신 쉼마루□ 위 치 : 광명시 금당로 47, 광명시 장애인이음센터/ 면적 303.3㎡□ 총사업비 : 76,000천원□ 주요사업- 건강증진 프로그램 : 슐런, 파크골프, 한궁 등- 사회참여 프로그램 : 프리저브드, 웃음치료, 노래교실, 문화체험 등- 사례관리 프로그램 : 장애인식 개선 교육, 사례관리 및 외부자원 연계 등",
+"slctCritCn": "- 무료 사용",
+"alwServCn": "- 무료 이용",
+"aplyMtdCn": "- 서비스 이용: 카페·쉼터 이용, 웃음치료·문화탐방·스포츠·생활공예 등 여가 프로그램- 신청방법: 전화(02-897-6501) 또는 방문 상담",
+"inqNum": "459",
+"lastModYmd": "20261021"
+}
+},
+"WLF00006799": {
+"_stamp": "20261021",
+"_fetched": 1792961650,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006799",
+"servNm": "주거약자 이사지원",
+"enfcBgngYmd": "20230126",
+"enfcEndYmd": "99991231",
+"bizChrDeptNm": "전남광주통합특별시 북구 통합돌봄국 주거복지과",
+"ctpvNm": "전남광주통합특별시",
+"sggNm": "북구",
+"servDgst": "○ 혼자서 이사가 어려운 주거취약계층의 이사지원을 통해 경제적 부담 완화\n○ 독거노인 및 중증장애 1인가구의 소외감 해소 및 주거안전서비스 필요",
+"trgterIndvdlNmArray": "장애인, 저소득",
+"intrsThemaNmArray": "신체건강, 서민금융",
+"sprtCycNm": "년",
+"srvPvsnNm": "현금지급",
+"aplyMtdNm": "방문",
+"sprtTrgtCn": "○ 기초의료급여수급자 중 독거노인(만 65세 이상), 심한장애 1인가구",
+"slctCritCn": "○ 기준중위소득 40% 이내 기초의료급여수급자",
+"alwServCn": "○ 추진절차- 동 행정복지센터 : 신청서류 제출- 구 : 신청서류 검토 및 지급○ 지급방법 : 계좌입금○ 신청서류 : 신청서, 개인정보동의서, 영수증 및 입금내역, 통장사본",
+"aplyMtdCn": "○ 추진절차- 동 행정복지센터 : 신청서류 제출- 구 : 신청서류 검토 및 지급○ 지급방법 : 계좌입금○ 신청서류 : 신청서, 개인정보동의서, 영수증 및 입금내역, 통장사본",
+"inqNum": "486",
+"lastModYmd": "20261021"
 }
 }
 }
