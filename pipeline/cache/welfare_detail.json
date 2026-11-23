@@ -21720,5 +21720,55 @@
 "inqNum": "60",
 "lastModYmd": "20261008"
 }
+},
+"WLF00006815": {
+"_stamp": "20261120",
+"_fetched": 1795392541,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006815",
+"servNm": "시군 경기도 장애인복지과 사회복지 종사자 장기근속비",
+"enfcBgngYmd": "20260101",
+"enfcEndYmd": "20261231",
+"bizChrDeptNm": "경기도 복지국 장애인복지과",
+"ctpvNm": "경기도",
+"servDgst": "사회복지 종사자의 장기근속 유도 및 안정적인 근무환경 조성을 통한 복지서비스 질 제고",
+"intrsThemaNmArray": "서민금융",
+"sprtCycNm": "년",
+"srvPvsnNm": "현금지급",
+"aplyMtdNm": "인터넷",
+"sprtTrgtCn": "현 소속시설 5년이상 장기재직 종사자",
+"slctCritCn": "사회복지 종사자,현 소속시설 5년이상 장기재직 종사자",
+"alwServCn": "사회복지 종사자의 장기근속 유도 및 안정적인 근무환경 조성을 통한 복지서비스 질 제고",
+"aplyMtdCn": "인터넷 희망이음",
+"inqNum": "205",
+"lastModYmd": "20261120"
+}
+},
+"WLF00006814": {
+"_stamp": "20261120",
+"_fetched": 1795392542,
+"detail": {
+"resultCode": "0",
+"resultMessage": "SUCCESS",
+"servId": "WLF00006814",
+"servNm": "경기도 장애인자립지원과 사회복지 종사자 장기근속비",
+"enfcBgngYmd": "20260101",
+"enfcEndYmd": "20261231",
+"bizChrDeptNm": "경기도 복지국 장애인자립지원과",
+"ctpvNm": "경기도",
+"servDgst": "사회복지 종사자의 장기근속 유도 및 안정적인 근무환경 조성을 통한 복지서비스 질 제고\n\n현 소속시설 5년 이상 장기재직 종사자 (’25년 12월말 기준) 1인당 5만원 지원",
+"intrsThemaNmArray": "서민금융",
+"sprtCycNm": "년",
+"srvPvsnNm": "현금지급",
+"aplyMtdNm": "인터넷",
+"sprtTrgtCn": "현 소속시설 5년 이상 장기재직 종사자 (’25년 12월말 기준)",
+"slctCritCn": "현 소속시설 5년 이상 장기재직 종사자 (’25년 12월말 기준)",
+"alwServCn": "현 소속시설 5년 이상 장기재직 종사자 (’25년 12월말 기준)에게 연 1회 5만원 지급",
+"aplyMtdCn": "희망이음 종사자 수당 신청",
+"inqNum": "65",
+"lastModYmd": "20261120"
+}
 }
 }
